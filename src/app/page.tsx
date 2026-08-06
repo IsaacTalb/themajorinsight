@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { categories, editors, sampleArticles, siteConfig } from "@/lib/site";
+import { ArticleCard } from "@/components/ArticleCard";
+import { NewsletterSignup } from "@/components/NewsletterSignup";
+import { articles } from "@/lib/articles";
+import { categories, editors, siteConfig } from "@/lib/site";
 
 const workflow = [
   "Trend discovery",
@@ -82,15 +85,14 @@ export default function Home() {
         <p className="text-sm font-black uppercase tracking-[0.25em] text-major">Launch articles</p>
         <h2 className="mt-2 text-4xl font-black tracking-tight">Starter templates for search demand</h2>
         <div className="mt-8 grid gap-6 md:grid-cols-3">
-          {sampleArticles.map((article) => (
-            <article key={article.slug} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <span className="rounded-full bg-major/10 px-3 py-1 text-xs font-black uppercase tracking-widest text-major">{article.metric}</span>
-              <h3 className="mt-4 text-2xl font-black leading-tight">{article.title}</h3>
-              <p className="mt-3 text-sm font-bold text-slate-500">{article.category}</p>
-              <p className="mt-3 leading-7 text-slate-600">{article.excerpt}</p>
-            </article>
+          {articles.slice(0, 3).map((article) => (
+            <ArticleCard key={article.slug} article={article} />
           ))}
         </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <NewsletterSignup />
       </section>
     </main>
   );
