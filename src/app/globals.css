@@ -27,3 +27,9 @@ a {
   background: #0f5fff;
   color: white;
 }
+
+@layer components {
+  .share-button {
+    @apply rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-700 transition hover:border-major hover:text-major focus:outline-none focus:ring-2 focus:ring-major focus:ring-offset-2;
+  }
+}

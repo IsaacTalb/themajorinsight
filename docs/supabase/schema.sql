@@ -76,3 +76,40 @@ create table if not exists newsletter_subscribers (
 create index if not exists posts_status_published_at_idx on posts(status, published_at desc);
 create index if not exists posts_category_id_idx on posts(category_id);
 create index if not exists newsletter_subscribers_status_idx on newsletter_subscribers(status);
+
+-- Public visitors can read published editorial data but cannot mutate it.
+alter table authors enable row level security;
+alter table categories enable row level security;
+alter table tags enable row level security;
+alter table posts enable row level security;
+alter table post_tags enable row level security;
+alter table newsletter_subscribers enable row level security;
+
+create policy "Published posts are publicly readable" on posts
+  for select using (status = 'published' and published_at <= now());
+create policy "Categories are publicly readable" on categories for select using (true);
+create policy "Tags are publicly readable" on tags for select using (true);
+create policy "Authors are publicly readable" on authors for select using (true);
+create policy "Published post tags are publicly readable" on post_tags for select using (
+  exists (select 1 from posts where posts.id = post_tags.post_id and posts.status = 'published' and posts.published_at <= now())
+);
+create policy "Visitors can subscribe" on newsletter_subscribers
+  for insert with check (status = 'active' and source = 'website');
+
+create or replace function increment_post_view(post_slug text)
+returns bigint
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare updated_views bigint;
+begin
+  update posts set view_count = view_count + 1
+  where slug = post_slug and status = 'published'
+  returning view_count into updated_views;
+  return updated_views;
+end;
+$$;
+
+revoke all on function increment_post_view(text) from public;
+grant execute on function increment_post_view(text) to service_role;

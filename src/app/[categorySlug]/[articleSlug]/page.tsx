@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
+import { ArticleEngagement } from "@/components/ArticleEngagement";
 import { articles, getArticleAuthor, getArticleBySlug } from "@/lib/articles";
 import { siteConfig } from "@/lib/site";
 
@@ -82,6 +83,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <span>•</span>
           <span>{article.readingTime}</span>
         </div>
+        <div className="mt-8">
+          <ArticleEngagement slug={article.slug} title={article.title} url={articleUrl} />
+        </div>
         <div className="mt-8 rounded-3xl bg-paper p-6 text-sm text-slate-600">
           <p className="font-black text-ink">Image brief</p>
           <p className="mt-2">{article.imageAlt}</p>
@@ -105,7 +109,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <p className="text-sm font-black uppercase tracking-[0.25em] text-major">Tags</p>
           <div className="mt-4 flex flex-wrap gap-2">
             {article.tags.map((tag) => (
-              <span key={tag} className="rounded-full bg-paper px-3 py-1 text-sm font-bold text-slate-700">{tag}</span>
+              <a key={tag} href={`/tag/${tag.toLowerCase().replaceAll(" ", "-")}`} className="rounded-full bg-paper px-3 py-1 text-sm font-bold text-slate-700 hover:text-major">{tag}</a>
             ))}
           </div>
         </div>
