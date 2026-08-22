@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { ArticleEngagement } from "@/components/ArticleEngagement";
-import { articles, getArticleAuthor, getArticleBySlug } from "@/lib/articles";
+import { articles, getArticleBySlug } from "@/lib/articles";
 import { siteConfig } from "@/lib/site";
 
 type ArticlePageProps = {
@@ -47,7 +47,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
-  const author = getArticleAuthor(article);
   const articleUrl = `${siteConfig.url}/${article.categorySlug}/${article.slug}`;
   const jsonLd = {
     "@context": "https://schema.org",
@@ -57,8 +56,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     datePublished: article.publishedAt,
     dateModified: article.updatedAt,
     author: {
-      "@type": "Person",
-      name: author?.name ?? siteConfig.name
+      "@type": "Organization",
+      name: siteConfig.name
     },
     publisher: {
       "@type": "Organization",
@@ -77,7 +76,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <h1 className="mt-4 text-4xl font-black tracking-tight md:text-6xl">{article.title}</h1>
         <p className="mt-5 text-xl leading-9 text-slate-700">{article.excerpt}</p>
         <div className="mt-6 flex flex-wrap gap-3 text-sm font-semibold text-slate-500">
-          <span>{author?.name ?? siteConfig.name}</span>
+          <span>{siteConfig.name}</span>
           <span>•</span>
           <time dateTime={article.publishedAt}>Published {article.publishedAt}</time>
           <span>•</span>

@@ -9,7 +9,7 @@ export function ArticleEngagement({ slug, title, url }: ArticleEngagementProps) 
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const key = `tmn-viewed-${slug}`;
+    const key = `tmi-viewed-${slug}`;
     if (sessionStorage.getItem(key)) return;
     sessionStorage.setItem(key, "1");
     fetch(`/api/views/${slug}`, { method: "POST" })

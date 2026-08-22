@@ -1,12 +1,22 @@
+const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+
+function getSiteUrl() {
+  if (!configuredSiteUrl) return "http://localhost:3000";
+
+  try {
+    return new URL(configuredSiteUrl).origin;
+  } catch {
+    throw new Error("NEXT_PUBLIC_SITE_URL must be a valid absolute URL.");
+  }
+}
+
 export const siteConfig = {
-  name: "The Major News",
-  domain: "themajornews.com",
-  url: "https://themajornews.com",
+  name: "The Major Insight",
+  url: getSiteUrl(),
   description:
     "Finance, markets, AI, technology, science, and culture coverage built for smart readers who want clear analysis and practical context.",
-  email: "editor@themajornews.com",
-  newsletterEmail: "newsletter@themajornews.com"
-};
+  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || null
+} as const;
 
 export const categories = [
   {
@@ -32,33 +42,6 @@ export const categories = [
     slug: "pulse",
     deck: "Viral trends, creator economy, social platforms, streaming, entertainment, and internet culture.",
     topics: ["Viral trends", "Creator economy", "Streaming", "Social media", "Entertainment", "Internet culture"]
-  }
-];
-
-export const editors = [
-  {
-    name: "Maya Chen",
-    role: "Senior AI & Tech Editor",
-    email: "maya@themajornews.com",
-    focus: "Tech & AI"
-  },
-  {
-    name: "Daniel Brooks",
-    role: "Finance Markets Editor",
-    email: "daniel@themajornews.com",
-    focus: "Finance & Markets"
-  },
-  {
-    name: "Elena Ortiz",
-    role: "Science & Future Editor",
-    email: "elena@themajornews.com",
-    focus: "Science & Future"
-  },
-  {
-    name: "Jordan Blake",
-    role: "Pulse Trends Editor",
-    email: "jordan@themajornews.com",
-    focus: "Pulse"
   }
 ];
 

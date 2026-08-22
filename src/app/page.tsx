@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArticleCard } from "@/components/ArticleCard";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { articles } from "@/lib/articles";
-import { categories, editors, siteConfig } from "@/lib/site";
+import { categories, siteConfig } from "@/lib/site";
 
 const workflow = [
   "Trend discovery",
@@ -61,23 +61,6 @@ export default function Home() {
               </div>
             </article>
           ))}
-        </div>
-      </section>
-
-      <section className="bg-white py-16">
-        <div className="mx-auto max-w-7xl px-6">
-          <p className="text-sm font-black uppercase tracking-[0.25em] text-major">Editorial desk</p>
-          <h2 className="mt-2 text-4xl font-black tracking-tight">Human-led editors with clear coverage lanes</h2>
-          <div className="mt-8 grid gap-5 md:grid-cols-4">
-            {editors.map((editor) => (
-              <div key={editor.email} className="rounded-3xl border border-slate-200 bg-paper p-5">
-                <p className="text-xl font-black">{editor.name}</p>
-                <p className="mt-2 text-sm font-bold text-major">{editor.role}</p>
-                <p className="mt-4 text-sm text-slate-600">{editor.focus}</p>
-                <p className="mt-2 text-sm text-slate-500">{editor.email}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 

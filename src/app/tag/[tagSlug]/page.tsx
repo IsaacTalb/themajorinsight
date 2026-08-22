@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArticleCard } from "@/components/ArticleCard";
 import { articles } from "@/lib/articles";
+import { siteConfig } from "@/lib/site";
 
 type TagPageProps = { params: Promise<{ tagSlug: string }> };
 const slugifyTag = (tag: string) => tag.toLowerCase().replaceAll(" ", "-");
@@ -17,7 +18,7 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
   const tag = matchingArticles[0].tags.find((item) => slugifyTag(item) === tagSlug) ?? tagSlug;
   return {
     title: `${tag} News and Analysis`,
-    description: `The latest ${tag} reporting, explainers, and analysis from The Major News.`,
+    description: `The latest ${tag} reporting, explainers, and analysis from ${siteConfig.name}.`,
     alternates: { canonical: `/tag/${tagSlug}` }
   };
 }
