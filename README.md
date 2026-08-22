@@ -1,4 +1,4 @@
-# The Major News
+# The Major Insights
 
 Search-first independent reporting on finance, markets, technology, AI, science, and internet culture.
 
