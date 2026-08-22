@@ -30,11 +30,10 @@ export default async function TagPage({ params }: TagPageProps) {
   const tag = matchingArticles[0].tags.find((item) => slugifyTag(item) === tagSlug) ?? tagSlug;
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-16">
-      <p className="text-sm font-black uppercase tracking-[0.25em] text-major">Topic</p>
-      <h1 className="mt-2 text-5xl font-black tracking-tight">{tag}</h1>
-      <p className="mt-4 max-w-2xl text-lg text-slate-600">News, practical explainers, and independent analysis covering {tag}.</p>
-      <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <main className="site-container py-12 md:py-20">
+      <header className="border-b border-ink pb-10"><p className="eyebrow">Topic</p><h1 className="display-title mt-4">{tag}</h1>
+      <p className="mt-6 max-w-2xl text-lg text-charcoal">News, practical explainers, and independent analysis covering {tag}.</p></header>
+      <div className="mt-12 grid gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
         {matchingArticles.map((article) => <ArticleCard key={article.slug} article={article} />)}
       </div>
     </main>
