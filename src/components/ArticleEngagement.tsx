@@ -28,8 +28,8 @@ export function ArticleEngagement({ slug, title, url }: ArticleEngagementProps) 
   const encodedTitle = encodeURIComponent(title);
 
   return (
-    <div className="flex flex-wrap items-center gap-2 border-y border-slate-200 py-4" aria-label="Article engagement">
-      {views !== null && <span className="mr-2 text-sm font-semibold text-slate-500">{views.toLocaleString()} views</span>}
+    <div className="flex flex-wrap items-center gap-2 border-y border-rule py-4" aria-label="Article engagement">
+      {views !== null && <span className="mr-2 text-xs font-semibold uppercase tracking-wider text-muted">{views.toLocaleString()} views</span>}
       <a className="share-button" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`} target="_blank" rel="noreferrer">LinkedIn</a>
       <a className="share-button" href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`} target="_blank" rel="noreferrer">X</a>
       <a className="share-button" href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`} target="_blank" rel="noreferrer">Facebook</a>

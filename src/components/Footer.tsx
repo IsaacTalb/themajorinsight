@@ -1,20 +1,33 @@
 import Link from "next/link";
-import { siteConfig } from "@/lib/site";
+import { categories, siteConfig } from "@/lib/site";
 
 const links = ["About", "Contact", "Editorial Policy", "Privacy Policy", "Terms", "Advertise"];
 
 export function Footer() {
   return (
-    <footer className="mt-20 border-t border-slate-200 bg-ink text-white">
-      <div className="mx-auto grid max-w-7xl gap-8 px-6 py-12 md:grid-cols-[2fr_1fr]">
+    <footer className="mt-24 border-t border-ink bg-ink text-white">
+      <div className="site-container grid gap-12 py-14 md:grid-cols-[1.7fr_1fr_1fr] md:py-20">
         <div>
-          <p className="text-2xl font-black">{siteConfig.name}</p>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">Independent business, technology, science, and culture coverage designed for clarity, search visibility, reader trust, and sustainable monetization.</p>
+          <Link href="/" className="font-editorial text-2xl font-semibold uppercase tracking-[0.06em]">{siteConfig.name}</Link>
+          <p className="mt-5 max-w-md text-sm leading-6 text-white/65">Independent reporting and analysis at the intersection of markets, technology, science, and culture.</p>
+          <Link href="/newsletter" className="mt-7 inline-block border-b border-white pb-1 text-xs font-bold uppercase tracking-[0.14em]">Receive The Major Brief</Link>
         </div>
-        <div className="grid gap-2 text-sm text-slate-300">
-          {links.map((link) => (
-            <Link key={link} href={`/${link.toLowerCase().replaceAll(" ", "-")}`} className="hover:text-white">{link}</Link>
-          ))}
+        <nav aria-label="Sections">
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-white/45">Sections</p>
+          <div className="mt-4 grid gap-2.5 text-sm text-white/75">
+            {categories.map((category) => <Link key={category.slug} href={`/${category.slug}`} className="hover:text-white">{category.name}</Link>)}
+          </div>
+        </nav>
+        <nav aria-label="Company">
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-white/45">Company</p>
+          <div className="mt-4 grid gap-2.5 text-sm text-white/75">
+            {links.map((link) => <Link key={link} href={`/${link.toLowerCase().replaceAll(" ", "-")}`} className="hover:text-white">{link}</Link>)}
+          </div>
+        </nav>
+      </div>
+      <div className="border-t border-white/15">
+        <div className="site-container flex flex-col gap-2 py-5 text-xs text-white/45 sm:flex-row sm:justify-between">
+          <p>© {new Date().getFullYear()} {siteConfig.name}</p><p>Clarity over noise.</p>
         </div>
       </div>
     </footer>

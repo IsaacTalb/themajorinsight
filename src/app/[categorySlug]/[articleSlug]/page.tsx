@@ -69,13 +69,13 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   };
 
   return (
-    <main className="mx-auto grid max-w-7xl gap-10 px-6 py-16 lg:grid-cols-[minmax(0,1fr)_360px]">
-      <article className="rounded-[2rem] bg-white p-8 shadow-sm md:p-12">
+    <main className="site-container grid gap-12 py-12 md:py-20 lg:grid-cols-[minmax(0,1fr)_19rem] lg:gap-16">
+      <article>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-        <p className="text-sm font-black uppercase tracking-[0.25em] text-major">{article.categoryName}</p>
-        <h1 className="mt-4 text-4xl font-black tracking-tight md:text-6xl">{article.title}</h1>
-        <p className="mt-5 text-xl leading-9 text-slate-700">{article.excerpt}</p>
-        <div className="mt-6 flex flex-wrap gap-3 text-sm font-semibold text-slate-500">
+        <p className="eyebrow">{article.categoryName}</p>
+        <h1 className="mt-5 max-w-4xl font-editorial text-5xl font-semibold leading-[1.02] tracking-[-0.035em] md:text-7xl">{article.title}</h1>
+        <p className="mt-7 max-w-3xl text-xl leading-9 text-charcoal">{article.excerpt}</p>
+        <div className="mt-7 flex flex-wrap gap-3 border-b border-ink pb-6 text-xs font-semibold uppercase tracking-wider text-muted">
           <span>{siteConfig.name}</span>
           <span>•</span>
           <time dateTime={article.publishedAt}>Published {article.publishedAt}</time>
@@ -85,30 +85,30 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <div className="mt-8">
           <ArticleEngagement slug={article.slug} title={article.title} url={articleUrl} />
         </div>
-        <div className="mt-8 rounded-3xl bg-paper p-6 text-sm text-slate-600">
-          <p className="font-black text-ink">Image brief</p>
+        <div className="mt-10 border-y border-rule bg-white p-6 text-sm text-muted">
+          <p className="font-bold uppercase tracking-wider text-ink">Image brief</p>
           <p className="mt-2">{article.imageAlt}</p>
         </div>
-        <div className="mt-8 space-y-6 text-lg leading-9 text-slate-700">
+        <div className="prose-editorial mt-10 max-w-[46rem] font-editorial text-xl leading-[1.75] text-charcoal">
           {article.body.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
-        <section className="mt-10 border-t border-slate-200 pt-8">
-          <h2 className="text-2xl font-black">Sources and references</h2>
-          <ul className="mt-4 grid gap-2 text-sm text-slate-600">
+        <section className="mt-12 border-t border-ink pt-7">
+          <h2 className="font-editorial text-2xl font-semibold">Sources and references</h2>
+          <ul className="mt-4 grid gap-2 text-sm text-muted">
             {article.sources.map((source) => (
-              <li key={source.url}><a className="font-bold text-major" href={source.url} rel="noreferrer" target="_blank">{source.label}</a></li>
+              <li key={source.url}><a className="text-link font-semibold" href={source.url} rel="noreferrer" target="_blank">{source.label}</a></li>
             ))}
           </ul>
         </section>
       </article>
-      <aside className="space-y-6">
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-sm font-black uppercase tracking-[0.25em] text-major">Tags</p>
+      <aside className="space-y-10 lg:border-l lg:border-rule lg:pl-8">
+        <div>
+          <p className="eyebrow">Topics</p>
           <div className="mt-4 flex flex-wrap gap-2">
             {article.tags.map((tag) => (
-              <a key={tag} href={`/tag/${tag.toLowerCase().replaceAll(" ", "-")}`} className="rounded-full bg-paper px-3 py-1 text-sm font-bold text-slate-700 hover:text-major">{tag}</a>
+              <a key={tag} href={`/tag/${tag.toLowerCase().replaceAll(" ", "-")}`} className="tag">{tag}</a>
             ))}
           </div>
         </div>

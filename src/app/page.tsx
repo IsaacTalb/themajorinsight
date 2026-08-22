@@ -4,79 +4,57 @@ import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { articles } from "@/lib/articles";
 import { categories, siteConfig } from "@/lib/site";
 
-const workflow = [
-  "Trend discovery",
-  "Keyword brief",
-  "Human edit",
-  "SEO review",
-  "Publish",
-  "Social + newsletter",
-  "Performance refresh"
-];
+const workflow = ["Trend discovery", "Keyword brief", "Human edit", "SEO review", "Publish", "Social + newsletter", "Performance refresh"];
 
 export default function Home() {
+  const leadArticle = articles[0];
   return (
     <main>
-      <section className="bg-gradient-to-br from-ink via-slate-900 to-major text-white">
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 py-20 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-          <div>
-            <p className="mb-4 inline-flex rounded-full bg-white/10 px-4 py-2 text-sm font-bold uppercase tracking-[0.25em] text-gold">Launch blueprint</p>
-            <h1 className="max-w-4xl text-5xl font-black tracking-tight md:text-7xl">Building a search-first media company for money, AI, future tech, and culture.</h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-200">{siteConfig.name} is structured to combine premium AdSense categories, trustworthy editorial systems, automated research workflows, and humanized reporting.</p>
+      <section className="site-container py-10 md:py-16">
+        <div className="grid border-y border-ink lg:grid-cols-[1.55fr_0.75fr]">
+          <div className="py-9 lg:border-r lg:border-rule lg:py-14 lg:pr-12">
+            <p className="eyebrow">The Major Perspective</p>
+            <h1 className="display-title mt-5 max-w-4xl">Intelligence for a world in motion.</h1>
+            <p className="mt-7 max-w-2xl text-lg leading-8 text-charcoal">{siteConfig.name} brings disciplined reporting and clear analysis to finance, technology, science, and the cultural forces reshaping modern life.</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/newsletter" className="rounded-full bg-gold px-6 py-3 font-black text-ink">Join the newsletter</Link>
-              <Link href="/editorial-policy" className="rounded-full border border-white/30 px-6 py-3 font-black text-white">Editorial standards</Link>
+              <Link href={`/${leadArticle.categorySlug}/${leadArticle.slug}`} className="button-primary">Read the latest</Link>
+              <Link href="/newsletter" className="button-secondary">Join the newsletter</Link>
             </div>
           </div>
-          <div className="rounded-3xl border border-white/10 bg-white/10 p-6 shadow-2xl backdrop-blur">
-            <p className="text-sm font-bold uppercase tracking-[0.25em] text-slate-300">Operating workflow</p>
-            <div className="mt-6 grid gap-3">
+          <aside className="border-t border-rule py-9 lg:border-t-0 lg:py-14 lg:pl-10" aria-label="Editorial approach">
+            <p className="eyebrow">Our method</p>
+            <ol className="mt-5 divide-y divide-rule border-t border-rule">
               {workflow.map((step, index) => (
-                <div key={step} className="flex items-center gap-3 rounded-2xl bg-white/10 p-4">
-                  <span className="grid h-8 w-8 place-items-center rounded-full bg-gold text-sm font-black text-ink">{index + 1}</span>
-                  <span className="font-semibold">{step}</span>
-                </div>
+                <li key={step} className="grid grid-cols-[2rem_1fr] py-2.5 text-sm"><span className="font-editorial text-muted">{String(index + 1).padStart(2, "0")}</span><span className="font-semibold">{step}</span></li>
               ))}
-            </div>
-          </div>
+            </ol>
+          </aside>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-16">
-        <div className="mb-8 flex items-end justify-between gap-6">
-          <div>
-            <p className="text-sm font-black uppercase tracking-[0.25em] text-major">Categories</p>
-            <h2 className="mt-2 text-4xl font-black tracking-tight">Revenue-aware editorial pillars</h2>
-          </div>
+      <section className="site-container py-10 md:py-16" aria-labelledby="latest-heading">
+        <div className="mb-9 flex items-end justify-between border-b border-rule pb-4">
+          <div><p className="eyebrow">Latest</p><h2 id="latest-heading" className="section-title mt-2">Essential reading</h2></div>
+          <span className="hidden text-xs font-semibold uppercase tracking-[0.14em] text-muted sm:block">Analysis · Briefings · Perspective</span>
         </div>
-        <div className="grid gap-6 md:grid-cols-2">
-          {categories.map((category) => (
-            <article key={category.slug} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h3 className="text-2xl font-black">{category.name}</h3>
-              <p className="mt-3 leading-7 text-slate-600">{category.deck}</p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {category.topics.map((topic) => (
-                  <span key={topic} className="rounded-full bg-paper px-3 py-1 text-sm font-semibold text-slate-700">{topic}</span>
-                ))}
-              </div>
+        <div className="grid gap-x-8 gap-y-12 md:grid-cols-3">{articles.slice(0, 3).map((article) => <ArticleCard key={article.slug} article={article} />)}</div>
+      </section>
+
+      <section className="site-container py-10 md:py-16" aria-labelledby="sections-heading">
+        <div className="border-b border-ink pb-4"><p className="eyebrow">Explore</p><h2 id="sections-heading" className="section-title mt-2">Areas of focus</h2></div>
+        <div className="divide-y divide-rule">
+          {categories.map((category, index) => (
+            <article key={category.slug} className="grid gap-4 py-7 md:grid-cols-[4rem_0.8fr_1.2fr_auto] md:items-start md:gap-8">
+              <span className="font-editorial text-lg text-muted">{String(index + 1).padStart(2, "0")}</span>
+              <h3 className="font-editorial text-2xl font-semibold"><Link href={`/${category.slug}`} className="hover:text-accent">{category.name}</Link></h3>
+              <p className="max-w-xl text-sm leading-6 text-muted">{category.deck}</p>
+              <Link href={`/${category.slug}`} className="text-xs font-bold uppercase tracking-[0.12em] underline decoration-rule underline-offset-4">View section</Link>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-16">
-        <p className="text-sm font-black uppercase tracking-[0.25em] text-major">Launch articles</p>
-        <h2 className="mt-2 text-4xl font-black tracking-tight">Starter templates for search demand</h2>
-        <div className="mt-8 grid gap-6 md:grid-cols-3">
-          {articles.slice(0, 3).map((article) => (
-            <ArticleCard key={article.slug} article={article} />
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-6 py-16">
-        <NewsletterSignup />
-      </section>
+      <section className="site-container py-10 md:py-16"><NewsletterSignup /></section>
     </main>
   );
 }

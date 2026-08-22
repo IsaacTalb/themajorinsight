@@ -5,13 +5,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#101828",
-        major: "#0f5fff",
-        gold: "#f4b740",
-        paper: "#f8fafc"
+        ink: "#111111",
+        charcoal: "#292929",
+        paper: "#F5F3EE",
+        muted: "#6B6B67",
+        rule: "#D8D5CE",
+        accent: "#8B2F25"
       },
       fontFamily: {
-        sans: ["var(--font-geist-sans)", "Inter", "system-ui", "sans-serif"]
+        sans: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"],
+        editorial: ["var(--font-source-serif)", "Georgia", "serif"]
+      },
+      borderRadius: {
+        DEFAULT: "4px"
       }
     }
   },
