@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { isSupabaseConfigured, writeToSupabase } from "@/lib/supabase";
+import { siteConfig } from "@/lib/site";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -20,5 +21,5 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, message: "We could not save your subscription. Please try again." }, { status: 502 });
   }
 
-  return NextResponse.json({ ok: true, message: "You are subscribed. Welcome to The Major News." });
+  return NextResponse.json({ ok: true, message: `You are subscribed. Welcome to ${siteConfig.name}.` });
 }

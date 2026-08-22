@@ -1,12 +1,9 @@
-import { editors } from "@/lib/site";
-
 export type Article = {
   title: string;
   slug: string;
   categorySlug: string;
   categoryName: string;
   excerpt: string;
-  authorEmail: string;
   publishedAt: string;
   updatedAt: string;
   readingTime: string;
@@ -25,7 +22,6 @@ export const articles: Article[] = [
     categoryName: "Finance & Markets",
     excerpt:
       "A practical briefing template for mortgage rate coverage, refinancing decisions, affordability pressure, and lender comparison updates.",
-    authorEmail: "daniel@themajornews.com",
     publishedAt: "2026-08-05",
     updatedAt: "2026-08-05",
     readingTime: "4 min read",
@@ -34,7 +30,7 @@ export const articles: Article[] = [
     imageAlt: "Homebuyer reviewing mortgage rate options on a laptop.",
     body: [
       "Mortgage rate coverage should be updated frequently because readers usually arrive with a decision in mind: buy now, wait, refinance, or compare lenders.",
-      "The Major News format for this topic should lead with what changed, why it matters, who is affected, and which terms readers should compare before making a financial decision.",
+      "The Major Insight format for this topic should lead with what changed, why it matters, who is affected, and which terms readers should compare before making a financial decision.",
       "Every finance article should include educational context and avoid promises, guarantees, or individualized financial advice. The best version of this page will eventually connect to rate tables, calculators, and lender comparison resources."
     ],
     sources: [
@@ -49,7 +45,6 @@ export const articles: Article[] = [
     categoryName: "Tech & AI",
     excerpt:
       "A search-focused comparison framework for founders, operators, freelancers, and small teams evaluating AI productivity software.",
-    authorEmail: "maya@themajornews.com",
     publishedAt: "2026-08-05",
     updatedAt: "2026-08-05",
     readingTime: "5 min read",
@@ -58,7 +53,7 @@ export const articles: Article[] = [
     imageAlt: "Small business owner comparing AI automation dashboards.",
     body: [
       "Small businesses usually adopt AI tools when they solve a direct workflow problem: writing, support, scheduling, reporting, lead generation, or internal knowledge search.",
-      "The Major News comparison format should evaluate pricing, ease of use, integrations, privacy, customer support, and the specific business workflows each product improves.",
+      "The Major Insight comparison format should evaluate pricing, ease of use, integrations, privacy, customer support, and the specific business workflows each product improves.",
       "The long-term SEO opportunity is to maintain updated comparison tables and link them to deeper reviews for each tool."
     ],
     sources: [
@@ -73,7 +68,6 @@ export const articles: Article[] = [
     categoryName: "Science & Future",
     excerpt:
       "A future-facing explainer connecting climate innovation, charging infrastructure, batteries, and consumer EV decisions.",
-    authorEmail: "elena@themajornews.com",
     publishedAt: "2026-08-05",
     updatedAt: "2026-08-05",
     readingTime: "4 min read",
@@ -97,7 +91,6 @@ export const articles: Article[] = [
     categoryName: "Pulse",
     excerpt:
       "A newsroom template for turning social momentum into useful context about platforms, creators, brands, and audience behavior.",
-    authorEmail: "jordan@themajornews.com",
     publishedAt: "2026-08-05",
     updatedAt: "2026-08-05",
     readingTime: "3 min read",
@@ -105,7 +98,7 @@ export const articles: Article[] = [
     tags: ["Viral trends", "Creator economy", "Social media", "Internet culture"],
     imageAlt: "Creator reviewing social media analytics on a phone.",
     body: [
-      "Viral stories can bring large traffic spikes, but The Major News should treat them as signals rather than gossip.",
+      "Viral stories can bring large traffic spikes, but The Major Insight should treat them as signals rather than gossip.",
       "The strongest Pulse coverage explains what happened, where it started, why it spread, and what it means for creators, platforms, advertisers, or consumers.",
       "This workflow keeps trending content useful while still capturing high-volume search and social discovery traffic."
     ],
@@ -122,8 +115,4 @@ export function getArticleBySlug(slug: string) {
 
 export function getArticlesByCategory(categorySlug: string) {
   return articles.filter((article) => article.categorySlug === categorySlug);
-}
-
-export function getArticleAuthor(article: Article) {
-  return editors.find((editor) => editor.email === article.authorEmail);
 }

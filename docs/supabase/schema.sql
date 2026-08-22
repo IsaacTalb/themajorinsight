@@ -1,4 +1,4 @@
--- Initial Supabase schema plan for The Major News.
+-- Initial Supabase schema plan for The Major Insight.
 -- Run after project creation, then add Row Level Security policies before production.
 
 create table if not exists authors (
