@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ArticleCard } from "@/components/ArticleCard";
 import { getArticlesByTag } from "@/lib/articles";
 import { siteConfig } from "@/lib/site";
+import { breadcrumbSchema, safeJsonLd } from "@/lib/seo";
 
 type TagPageProps = { params: Promise<{ tagSlug: string }> };
 const slugifyTag = (tag: string) => tag.toLowerCase().replaceAll(" ", "-");
@@ -27,6 +28,7 @@ export default async function TagPage({ params }: TagPageProps) {
 
   return (
     <main className="site-container py-12 md:py-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html:safeJsonLd(breadcrumbSchema([{name:"Home",path:"/"},{name:tag,path:`/tag/${tagSlug}`}]))}}/>
       <header className="border-b border-ink pb-10"><p className="eyebrow">Topic</p><h1 className="display-title mt-4">{tag}</h1>
       <p className="mt-6 max-w-2xl text-lg text-charcoal">News, practical explainers, and independent analysis covering {tag}.</p></header>
       <div className="mt-12 grid gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">

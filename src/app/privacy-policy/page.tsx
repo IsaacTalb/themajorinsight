@@ -1,2 +1,5 @@
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
+export const metadata: Metadata = pageMetadata("Privacy Policy", "How The Major Insight collects, uses, retains, and safeguards information.", "/privacy-policy");
 import { EditorialPage } from "@/components/EditorialPage";
 export default function Page(){return <EditorialPage eyebrow="Legal" title="Privacy Policy" intro="How we collect, use, and safeguard information when you visit The Major Insight."><p>Last updated: August 23, 2026.</p><h2>Information we collect</h2><p>We may receive information you submit, such as an email address, and technical information such as device, browser, referral, and usage data.</p><h2>How we use information</h2><p>We use information to operate and improve the site, deliver requested newsletters, measure readership, prevent abuse, and meet legal obligations.</p><h2>Choices and retention</h2><p>You may unsubscribe from email at any time. We retain information only as long as reasonably necessary for its stated purpose.</p><h2>Contact</h2><p>Use our contact page for privacy questions or requests.</p></EditorialPage>}

@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+export const metadata: Metadata = { title: "Search", robots: { index: false, follow: true }, alternates: { canonical: "/search" } };
 import { ArticleCard } from "@/components/ArticleCard";
 import { getLatestInsights } from "@/lib/articles";
 

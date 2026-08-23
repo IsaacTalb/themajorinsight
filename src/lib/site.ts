@@ -15,8 +15,14 @@ export const siteConfig = {
   url: getSiteUrl(),
   description:
     "Finance, markets, AI, technology, science, and culture coverage built for smart readers who want clear analysis and practical context.",
-  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || null
+  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || null,
+  locale: "en_US",
+  language: "en-us"
 } as const;
+
+export function absoluteUrl(path = "/") {
+  return new URL(path, `${siteConfig.url}/`).toString();
+}
 
 export const categories = [
   {

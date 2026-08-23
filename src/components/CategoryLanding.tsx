@@ -2,14 +2,18 @@ import { ArticleCard } from "@/components/ArticleCard";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { getArticlesByCategory } from "@/lib/articles";
 import type { categories } from "@/lib/site";
+import { breadcrumbSchema, safeJsonLd } from "@/lib/seo";
 
 type Category = (typeof categories)[number];
 
-export async function CategoryLanding({ category }: { category: Category }) {
-  const { articles: categoryArticles } = await getArticlesByCategory(category.slug, { pageSize: 24 });
+export async function CategoryLanding({ category, page = 1 }: { category: Category; page?: number }) {
+  const { articles: categoryArticles, totalPages } = await getArticlesByCategory(category.slug, { page, pageSize: 24 });
   const [lead, ...latest] = categoryArticles;
   return (
     <main className="site-container py-12 md:py-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbSchema([{ name: "Home", path: "/" }, { name: category.name, path: `/${category.slug}` }])) }} />
+      {page > 1 && <link rel="prev" href={page === 2 ? `/${category.slug}` : `/${category.slug}?page=${page - 1}`} />}
+      {page < totalPages && <link rel="next" href={`/${category.slug}?page=${page + 1}`} />}
       <header className="grid gap-8 border-b border-ink pb-10 md:grid-cols-[1fr_1fr] md:items-end md:pb-14">
         <div><p className="eyebrow">Section</p><h1 className="display-title mt-4">{category.name}</h1></div>
         <div>
@@ -25,7 +29,7 @@ export async function CategoryLanding({ category }: { category: Category }) {
         <div className="grid gap-x-8 gap-y-12 md:grid-cols-2">{(latest.length ? latest : categoryArticles).map((article) => <ArticleCard key={article.slug} article={article} />)}</div>
       </section>
       <section className="grid gap-10 border-y border-ink py-10 md:grid-cols-2"><div><p className="eyebrow">Popular</p><h2 className="mt-2 font-editorial text-3xl font-semibold">Most read in {category.name}</h2>{lead && <a className="text-link mt-5 block font-semibold" href={`/${lead.categorySlug}/${lead.slug}`}>{lead.title}</a>}</div><div><p className="eyebrow">Explore subtopics</p><div className="mt-4 flex flex-wrap gap-2">{category.topics.map(topic => <a className="tag" key={topic} href={`/tag/${topic.toLowerCase().replaceAll(" ", "-")}`}>{topic}</a>)}</div></div></section>
-      <nav className="flex items-center justify-between py-10" aria-label="Pagination"><span className="text-sm text-muted">Page 1 of 1</span><button className="button-secondary" disabled>Load more stories</button></nav>
+      <nav className="flex items-center justify-between py-10" aria-label="Pagination"><span className="text-sm text-muted">Page {page} of {Math.max(1, totalPages)}</span><span className="flex gap-3">{page > 1 && <a className="button-secondary" href={page === 2 ? `/${category.slug}` : `/${category.slug}?page=${page - 1}`}>Previous</a>}{page < totalPages && <a className="button-secondary" href={`/${category.slug}?page=${page + 1}`}>Next</a>}</span></nav>
       <NewsletterSignup />
     </main>
   );

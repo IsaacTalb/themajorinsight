@@ -1,2 +1,5 @@
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
+export const metadata: Metadata = pageMetadata("Advertise", "Advertising and sponsorship opportunities with The Major Insight.", "/advertise");
 import Link from "next/link"; import { EditorialPage } from "@/components/EditorialPage";
 export default function Page(){return <EditorialPage eyebrow="Partnerships" title="Advertise" intro="Reach curious decision-makers across markets, technology, science, and culture."><h2>Partnership options</h2><ul><li>High-visibility display placements.</li><li>Newsletter sponsorships.</li><li>Clearly labeled custom programs.</li></ul><h2>Editorial independence</h2><p>Commercial partnerships are labeled and separated from newsroom decision-making. Sponsors do not receive approval over independent editorial coverage.</p><h2>Start a conversation</h2><p>Share your campaign goals, timing, intended audience, and budget through our <Link className="text-link font-semibold" href="/contact">contact page</Link>.</p></EditorialPage>}
