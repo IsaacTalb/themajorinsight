@@ -1,0 +1,3 @@
+import test from "node:test";import assert from "node:assert/strict";import{MAX_IMAGE_BYTES,objectKey,validateImage}from"./media-validation";
+test("accepts supported image upload and creates an SEO key",()=>{assert.equal(validateImage("Major Insight Hero.JPG","image/jpeg",100).extension,"jpg");assert.match(objectKey("Major Insight Hero.JPG","image/jpeg",100,new Date("2026-08-01")),/^media\/2026\/08\/major-insight-hero-[a-f0-9]{8}\.jpg$/)});
+test("rejects spoofed, unsafe, and oversized uploads",()=>{assert.throws(()=>validateImage("photo.png","image/jpeg",100));assert.throws(()=>validateImage("../photo.jpg","image/jpeg",100));assert.throws(()=>validateImage("photo.jpg","image/jpeg",MAX_IMAGE_BYTES+1))});
