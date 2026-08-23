@@ -1,4 +1,5 @@
 export type Article = {
+  type: "Analysis" | "News" | "Explainer" | "Guide" | "Review" | "Comparison" | "Report" | "Opinion";
   title: string;
   slug: string;
   categorySlug: string;
@@ -10,12 +11,16 @@ export type Article = {
   focusKeyword: string;
   tags: string[];
   imageAlt: string;
+  image?: { src: string; caption: string; credit: string };
+  author: { name: string; slug: string; role: string; bio: string };
+  keyTakeaways?: string[];
   body: string[];
   sources: { label: string; url: string }[];
 };
 
 export const articles: Article[] = [
   {
+    type: "Analysis",
     title: "Current Mortgage Rate Trends Homebuyers Should Watch",
     slug: "current-mortgage-rate-trends-homebuyers-should-watch",
     categorySlug: "finance-markets",
@@ -28,6 +33,8 @@ export const articles: Article[] = [
     focusKeyword: "mortgage rate trends",
     tags: ["Mortgage rates", "Refinancing", "Housing market", "Personal finance"],
     imageAlt: "Homebuyer reviewing mortgage rate options on a laptop.",
+    author: { name: "The Major Insight Desk", slug: "major-insight-desk", role: "Editorial team", bio: "The newsroom team covering the forces reshaping markets, technology, science, and culture." },
+    keyTakeaways: ["Rate changes affect affordability as much as asking prices.", "Compare APR, fees, and loan terms—not only the headline rate.", "Treat forecasts as context, not guarantees."],
     body: [
       "Mortgage rate coverage should be updated frequently because readers usually arrive with a decision in mind: buy now, wait, refinance, or compare lenders.",
       "The Major Insight format for this topic should lead with what changed, why it matters, who is affected, and which terms readers should compare before making a financial decision.",
@@ -39,6 +46,7 @@ export const articles: Article[] = [
     ]
   },
   {
+    type: "Comparison",
     title: "Best AI Tools for Small Business Automation",
     slug: "best-ai-tools-small-business-automation",
     categorySlug: "tech-ai",
@@ -51,6 +59,8 @@ export const articles: Article[] = [
     focusKeyword: "best AI tools for small business",
     tags: ["AI tools", "Automation", "SaaS", "Small business"],
     imageAlt: "Small business owner comparing AI automation dashboards.",
+    author: { name: "The Major Insight Desk", slug: "major-insight-desk", role: "Editorial team", bio: "The newsroom team covering the forces reshaping markets, technology, science, and culture." },
+    keyTakeaways: ["Start with one clearly defined workflow.", "Review privacy, integrations, and total cost before adopting a tool.", "Measure saved time and output quality during a trial."],
     body: [
       "Small businesses usually adopt AI tools when they solve a direct workflow problem: writing, support, scheduling, reporting, lead generation, or internal knowledge search.",
       "The Major Insight comparison format should evaluate pricing, ease of use, integrations, privacy, customer support, and the specific business workflows each product improves.",
@@ -62,6 +72,7 @@ export const articles: Article[] = [
     ]
   },
   {
+    type: "Explainer",
     title: "What Green Energy Breakthroughs Mean for EV Owners",
     slug: "green-energy-breakthroughs-ev-owners",
     categorySlug: "science-future",
@@ -74,6 +85,7 @@ export const articles: Article[] = [
     focusKeyword: "green energy breakthroughs EV owners",
     tags: ["Green energy", "EVs", "Battery tech", "Climate innovation"],
     imageAlt: "Electric vehicle charging near solar panels at sunset.",
+    author: { name: "The Major Insight Desk", slug: "major-insight-desk", role: "Editorial team", bio: "The newsroom team covering the forces reshaping markets, technology, science, and culture." },
     body: [
       "Green energy coverage works best when it explains how research, policy, and infrastructure affect everyday costs for readers.",
       "For EV owners, the most useful reporting connects battery improvements, charging availability, grid reliability, and incentives in one practical framework.",
@@ -85,6 +97,7 @@ export const articles: Article[] = [
     ]
   },
   {
+    type: "Analysis",
     title: "Why Viral Internet Trends Become Business News",
     slug: "why-viral-internet-trends-become-business-news",
     categorySlug: "pulse",
@@ -97,6 +110,7 @@ export const articles: Article[] = [
     focusKeyword: "viral internet trends business news",
     tags: ["Viral trends", "Creator economy", "Social media", "Internet culture"],
     imageAlt: "Creator reviewing social media analytics on a phone.",
+    author: { name: "The Major Insight Desk", slug: "major-insight-desk", role: "Editorial team", bio: "The newsroom team covering the forces reshaping markets, technology, science, and culture." },
     body: [
       "Viral stories can bring large traffic spikes, but The Major Insight should treat them as signals rather than gossip.",
       "The strongest Pulse coverage explains what happened, where it started, why it spread, and what it means for creators, platforms, advertisers, or consumers.",

@@ -1,10 +1,2 @@
-import { siteConfig } from "@/lib/site";
-
-export default function AboutPage() {
-  return (
-    <main className="site-container max-w-4xl py-16 md:py-24">
-      <p className="eyebrow">Company</p><h1 className="display-title mt-4">About {siteConfig.name}</h1>
-      <p className="mt-8 border-t border-ink pt-8 text-lg leading-8 text-charcoal">{siteConfig.name} covers finance, markets, artificial intelligence, technology, science, future innovation, and cultural trends for readers who want practical context without noise.</p>
-    </main>
-  );
-}
+import { EditorialPage } from "@/components/EditorialPage"; import { siteConfig } from "@/lib/site";
+export default function Page(){return <EditorialPage eyebrow="Company" title={`About ${siteConfig.name}`} intro="Independent journalism for readers who want to understand what matters—and what it means next."><h2>Our purpose</h2><p>We cover finance, markets, artificial intelligence, technology, science, future innovation, and cultural trends with practical context and a respect for readers’ time.</p><h2>What readers can expect</h2><ul><li>Clear explanations without unnecessary jargon.</li><li>Transparent sourcing and visible corrections.</li><li>A distinction between reporting, analysis, reviews, and opinion.</li></ul><h2>Independence</h2><p>Editorial decisions are made independently. Commercial relationships do not determine our conclusions or coverage.</p></EditorialPage>}

@@ -1,8 +1,2 @@
-export default function PrivacyPolicyPage() {
-  return (
-    <main className="site-container max-w-4xl py-16 md:py-24">
-      <p className="eyebrow">Legal</p><h1 className="display-title mt-4">Privacy Policy</h1>
-      <p className="mt-8 border-t border-ink pt-8 text-lg leading-8 text-charcoal">This starter policy page reserves space for analytics, newsletter, advertising, cookie, and data retention disclosures required before production launch and AdSense review.</p>
-    </main>
-  );
-}
+import { EditorialPage } from "@/components/EditorialPage";
+export default function Page(){return <EditorialPage eyebrow="Legal" title="Privacy Policy" intro="How we collect, use, and safeguard information when you visit The Major Insight."><p>Last updated: August 23, 2026.</p><h2>Information we collect</h2><p>We may receive information you submit, such as an email address, and technical information such as device, browser, referral, and usage data.</p><h2>How we use information</h2><p>We use information to operate and improve the site, deliver requested newsletters, measure readership, prevent abuse, and meet legal obligations.</p><h2>Choices and retention</h2><p>You may unsubscribe from email at any time. We retain information only as long as reasonably necessary for its stated purpose.</p><h2>Contact</h2><p>Use our contact page for privacy questions or requests.</p></EditorialPage>}

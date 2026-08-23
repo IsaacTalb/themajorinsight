@@ -1,10 +1,2 @@
-import { siteConfig } from "@/lib/site";
-
-export default function AdvertisePage() {
-  return (
-    <main className="site-container max-w-4xl py-16 md:py-24">
-      <p className="eyebrow">Partnerships</p><h1 className="display-title mt-4">Advertise</h1>
-      <p className="mt-8 border-t border-ink pt-8 text-lg leading-8 text-charcoal">{siteConfig.name} is building premium audiences across finance, AI, business software, science, and internet culture. Sponsorship and direct advertising packages will be available after launch.</p>
-    </main>
-  );
-}
+import Link from "next/link"; import { EditorialPage } from "@/components/EditorialPage";
+export default function Page(){return <EditorialPage eyebrow="Partnerships" title="Advertise" intro="Reach curious decision-makers across markets, technology, science, and culture."><h2>Partnership options</h2><ul><li>High-visibility display placements.</li><li>Newsletter sponsorships.</li><li>Clearly labeled custom programs.</li></ul><h2>Editorial independence</h2><p>Commercial partnerships are labeled and separated from newsroom decision-making. Sponsors do not receive approval over independent editorial coverage.</p><h2>Start a conversation</h2><p>Share your campaign goals, timing, intended audience, and budget through our <Link className="text-link font-semibold" href="/contact">contact page</Link>.</p></EditorialPage>}
