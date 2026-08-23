@@ -18,6 +18,7 @@ export type Database = {
       trend_topics: Table<Row>;
       site_settings: Table<Row>;
       audit_logs: Table<Row>;
+      post_revisions: Table<Row>;
     };
     Views: Record<string, never>;
     Functions: { increment_post_view: { Args: { post_slug: string }; Returns: number } };

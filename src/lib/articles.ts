@@ -2,6 +2,7 @@ import "server-only";
 
 import { fixtureArticles } from "@/lib/article-fixtures";
 import { createAdminSupabaseClient, createPublicSupabaseClient } from "@/lib/supabase";
+import { sanitizeArticleHtml } from "@/lib/editorial";
 
 export type Article = {
   type: "Analysis" | "News" | "Explainer" | "Guide" | "Review" | "Comparison" | "Report" | "Opinion";
@@ -9,7 +10,7 @@ export type Article = {
   publishedAt: string; updatedAt: string; readingTime: string; focusKeyword: string; tags: string[];
   imageAlt: string; image?: { src: string; caption: string; credit: string };
   author: { name: string; slug: string; role: string; bio: string };
-  keyTakeaways?: string[]; body: string[]; sources: { label: string; url: string }[];
+  keyTakeaways?: string[]; body: string[]; bodyHtml?: string; sources: { label: string; url: string }[];
 };
 
 export type Pagination = { page?: number; pageSize?: number };
@@ -29,7 +30,7 @@ function mapPost(row: any): Article {
     tags: (row.post_tags ?? []).map((x: any) => x.tags.name), imageAlt: row.featured_image_alt ?? "",
     image: row.featured_image_url ? { src: row.featured_image_url, caption: row.featured_image_caption ?? "", credit: row.featured_image_credit ?? "" } : undefined,
     author: { name: row.authors.name, slug: row.authors.slug, role: row.authors.position, bio: row.authors.bio ?? "" },
-    keyTakeaways: takeaways, body: paragraphs,
+    keyTakeaways: takeaways, body: paragraphs, bodyHtml: typeof content.html === "string" ? sanitizeArticleHtml(content.html) : undefined,
     sources: (row.post_sources ?? []).sort((a: any, b: any) => a.sort_order - b.sort_order).map((x: any) => ({ label: x.label, url: x.url }))
   };
 }
