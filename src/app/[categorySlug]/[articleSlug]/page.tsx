@@ -4,24 +4,23 @@ import { notFound } from "next/navigation";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { ArticleEngagement } from "@/components/ArticleEngagement";
 import { ArticleCard } from "@/components/ArticleCard";
-import { articles, getArticleBySlug } from "@/lib/articles";
+import { getArticleBySlug, getLatestInsights } from "@/lib/articles";
 import { siteConfig } from "@/lib/site";
 
 type Props = { params: Promise<{ categorySlug: string; articleSlug: string }> };
 const prettyDate = (date: string) => new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(date));
 
-export function generateStaticParams() { return articles.map(({ categorySlug, slug: articleSlug }) => ({ categorySlug, articleSlug })); }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { categorySlug, articleSlug } = await params; const article = getArticleBySlug(articleSlug);
+  const { categorySlug, articleSlug } = await params; const article = await getArticleBySlug(articleSlug);
   if (!article || article.categorySlug !== categorySlug) return {};
   return { title: article.title, description: article.excerpt, alternates: { canonical: `/${categorySlug}/${articleSlug}` }, openGraph: { title: article.title, description: article.excerpt, type: "article", publishedTime: article.publishedAt, modifiedTime: article.updatedAt, tags: article.tags } };
 }
 
 export default async function ArticlePage({ params }: Props) {
-  const { categorySlug, articleSlug } = await params; const article = getArticleBySlug(articleSlug);
+  const { categorySlug, articleSlug } = await params; const article = await getArticleBySlug(articleSlug);
   if (!article || article.categorySlug !== categorySlug) notFound();
   const articleUrl = `${siteConfig.url}/${categorySlug}/${articleSlug}`;
-  const related = articles.filter((item) => item.slug !== article.slug).slice(0, 3);
+  const related = (await getLatestInsights(4)).filter((item) => item.slug !== article.slug).slice(0, 3);
   const schemaType = article.type === "News" ? "NewsArticle" : "Article";
   const jsonLd = { "@context": "https://schema.org", "@type": schemaType, headline: article.title, description: article.excerpt, datePublished: article.publishedAt, dateModified: article.updatedAt, articleSection: article.categoryName, author: { "@type": "Person", name: article.author.name, url: `${siteConfig.url}/author/${article.author.slug}` }, publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url }, mainEntityOfPage: articleUrl, keywords: article.tags.join(", ") };
   return <main>

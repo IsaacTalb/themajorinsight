@@ -1,38 +1,37 @@
+import "server-only";
+
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/lib/database.types";
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-export const isSupabaseConfigured = Boolean(supabaseUrl && serviceRoleKey);
+export const isSupabaseConfigured = Boolean(supabaseUrl && anonKey);
+export const isSupabaseAdminConfigured = Boolean(supabaseUrl && serviceRoleKey);
 
-export async function writeToSupabase(table: string, body: Record<string, unknown>, prefer = "return=minimal") {
-  if (!supabaseUrl || !serviceRoleKey) throw new Error("Supabase is not configured");
+const options = { auth: { persistSession: false, autoRefreshToken: false } } as const;
 
-  return fetch(`${supabaseUrl}/rest/v1/${table}`, {
-    method: "POST",
-    headers: {
-      apikey: serviceRoleKey,
-      Authorization: `Bearer ${serviceRoleKey}`,
-      "Content-Type": "application/json",
-      Prefer: prefer
-    },
-    body: JSON.stringify(body),
-    cache: "no-store"
-  });
+/** RLS-constrained client for server-rendered public content. */
+export function createPublicSupabaseClient(): SupabaseClient<Database> | null {
+  if (!supabaseUrl || !anonKey) return null;
+  return createClient<Database>(supabaseUrl, anonKey, options);
 }
 
-export async function callSupabaseRpc<T>(functionName: string, body: Record<string, unknown>) {
-  if (!supabaseUrl || !serviceRoleKey) throw new Error("Supabase is not configured");
+/** Service-role client. Import only from trusted server routes/actions. */
+export function createAdminSupabaseClient(): SupabaseClient<Database> {
+  if (!supabaseUrl || !serviceRoleKey) throw new Error("Supabase service role is not configured");
+  return createClient<Database>(supabaseUrl, serviceRoleKey, options);
+}
 
-  const response = await fetch(`${supabaseUrl}/rest/v1/rpc/${functionName}`, {
-    method: "POST",
-    headers: {
-      apikey: serviceRoleKey,
-      Authorization: `Bearer ${serviceRoleKey}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(body),
-    cache: "no-store"
-  });
+export async function writeToSupabase(table: "newsletter_subscribers", body: Database["public"]["Tables"]["newsletter_subscribers"]["Insert"]) {
+  const client = createAdminSupabaseClient();
+  return client.from(table).upsert(body, { onConflict: "email", ignoreDuplicates: true });
+}
 
-  if (!response.ok) throw new Error(`Supabase RPC failed with status ${response.status}`);
-  return response.json() as Promise<T>;
+export async function callSupabaseRpc<T>(functionName: "increment_post_view", body: { post_slug: string }) {
+  const client = createAdminSupabaseClient();
+  const { data, error } = await client.rpc(functionName, body);
+  if (error) throw error;
+  return data as T;
 }

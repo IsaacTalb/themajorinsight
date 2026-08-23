@@ -1,19 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArticleCard } from "@/components/ArticleCard";
-import { articles } from "@/lib/articles";
+import { getArticlesByTag } from "@/lib/articles";
 import { siteConfig } from "@/lib/site";
 
 type TagPageProps = { params: Promise<{ tagSlug: string }> };
 const slugifyTag = (tag: string) => tag.toLowerCase().replaceAll(" ", "-");
 
-export function generateStaticParams() {
-  return [...new Set(articles.flatMap((article) => article.tags.map(slugifyTag)))].map((tagSlug) => ({ tagSlug }));
-}
-
 export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {
   const { tagSlug } = await params;
-  const matchingArticles = articles.filter((article) => article.tags.some((tag) => slugifyTag(tag) === tagSlug));
+  const { articles: matchingArticles } = await getArticlesByTag(tagSlug, { pageSize: 24 });
   if (!matchingArticles.length) return {};
   const tag = matchingArticles[0].tags.find((item) => slugifyTag(item) === tagSlug) ?? tagSlug;
   return {
@@ -25,7 +21,7 @@ export async function generateMetadata({ params }: TagPageProps): Promise<Metada
 
 export default async function TagPage({ params }: TagPageProps) {
   const { tagSlug } = await params;
-  const matchingArticles = articles.filter((article) => article.tags.some((tag) => slugifyTag(tag) === tagSlug));
+  const { articles: matchingArticles } = await getArticlesByTag(tagSlug, { pageSize: 24 });
   if (!matchingArticles.length) notFound();
   const tag = matchingArticles[0].tags.find((item) => slugifyTag(item) === tagSlug) ?? tagSlug;
 

@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { ArticleCard } from "@/components/ArticleCard";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
-import { articles } from "@/lib/articles";
+import { getLatestInsights } from "@/lib/articles";
 import { categories, siteConfig } from "@/lib/site";
 
 const workflow = ["Trend discovery", "Keyword brief", "Human edit", "SEO review", "Publish", "Social + newsletter", "Performance refresh"];
 
-export default function Home() {
+export default async function Home() {
+  const articles = await getLatestInsights(6);
   const leadArticle = articles[0];
   return (
     <main>
@@ -17,7 +18,7 @@ export default function Home() {
             <h1 className="display-title mt-5 max-w-4xl">Intelligence for a world in motion.</h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-charcoal">{siteConfig.name} brings disciplined reporting and clear analysis to finance, technology, science, and the cultural forces reshaping modern life.</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href={`/${leadArticle.categorySlug}/${leadArticle.slug}`} className="button-primary">Read the latest</Link>
+              <Link href={leadArticle ? `/${leadArticle.categorySlug}/${leadArticle.slug}` : "/newsletter"} className="button-primary">Read the latest</Link>
               <Link href="/newsletter" className="button-secondary">Join the newsletter</Link>
             </div>
           </div>

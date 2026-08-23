@@ -5,8 +5,8 @@ import type { categories } from "@/lib/site";
 
 type Category = (typeof categories)[number];
 
-export function CategoryLanding({ category }: { category: Category }) {
-  const categoryArticles = getArticlesByCategory(category.slug);
+export async function CategoryLanding({ category }: { category: Category }) {
+  const { articles: categoryArticles } = await getArticlesByCategory(category.slug, { pageSize: 24 });
   const [lead, ...latest] = categoryArticles;
   return (
     <main className="site-container py-12 md:py-20">
