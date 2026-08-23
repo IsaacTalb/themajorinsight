@@ -33,7 +33,7 @@ create table if not exists posts (
   id uuid primary key default gen_random_uuid(), title text not null check (length(trim(title)) > 0), slug text unique not null,
   excerpt text not null default '', content jsonb not null default '{"paragraphs":[]}'::jsonb,
   content_type text not null default 'Analysis' check (content_type in ('Analysis','News','Explainer','Guide','Review','Comparison','Report','Opinion')),
-  category_id uuid not null references categories(id), author_id uuid not null references authors(id), status post_status not null default 'draft',
+  category_id uuid references categories(id), author_id uuid references authors(id), status post_status not null default 'draft',
   featured_image_id uuid references media_assets(id) on delete set null, featured_image_url text, featured_image_alt text,
   featured_image_caption text, featured_image_credit text, seo_title text, seo_description text, canonical_url text, focus_keyword text,
   published_at timestamptz, scheduled_at timestamptz, reading_time_minutes integer not null default 1 check (reading_time_minutes > 0),

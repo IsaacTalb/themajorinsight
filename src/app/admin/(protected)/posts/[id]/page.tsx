@@ -1,4 +1,15 @@
 import { notFound } from "next/navigation";
 import { PageHeader, Status } from "@/components/admin/AdminShell";
+import { PostEditor } from "@/components/admin/PostEditor";
 import { requireAdmin } from "@/lib/admin-auth";
-export default async function PostDetail({ params }: { params: Promise<{id:string}> }) { const { id } = await params; const { supabase } = await requireAdmin(); const { data } = await supabase.from("posts").select("id,title,slug,status,excerpt,updated_at").eq("id",id).maybeSingle(); if (!data) notFound(); const post=data as Record<string,unknown>; return <main className="admin-main"><PageHeader eyebrow="Content / Posts" title={String(post.title)} action={<Status value={String(post.status)}/>} /><section className="admin-panel admin-definition"><div><span>Slug</span><strong>/{String(post.slug)}</strong></div><div><span>Last updated</span><strong>{new Date(String(post.updated_at)).toLocaleString()}</strong></div><div className="admin-wide"><span>Excerpt</span><p>{String(post.excerpt || "No excerpt has been added.")}</p></div><p className="admin-note admin-wide">The article editor is intentionally not included in Phase 5.</p></section></main>; }
+export default async function PostDetail({params}:{params:Promise<{id:string}>}) {
+  const {id}=await params; const {profile,supabase}=await requireAdmin(["owner","admin","editor","author"]);
+  const [post,authors,categories,tags,revisions,audit]=await Promise.all([
+    supabase.from("posts").select("*,post_tags(tag_id),post_sources(label,url,publisher,sort_order)").eq("id",id).maybeSingle(),
+    supabase.from("authors").select("id,name").order("name"),supabase.from("categories").select("id,name").order("name"),supabase.from("tags").select("id,name").order("name"),
+    supabase.from("post_revisions").select("id,revision_number,change_note,created_at").eq("post_id",id).order("revision_number",{ascending:false}).limit(12),
+    supabase.from("audit_logs").select("id,action,created_at").eq("entity_type","post").eq("entity_id",id).order("created_at",{ascending:false}).limit(12)
+  ]);
+  if(!post.data)notFound();
+  return <main className="admin-main editor-page"><PageHeader eyebrow="Content / Posts" title={String((post.data as any).title)} action={<Status value={String((post.data as any).status)}/>}/><PostEditor post={post.data as any} authors={(authors.data||[]) as any} categories={(categories.data||[]) as any} tags={(tags.data||[]) as any} revisions={(revisions.data||[]) as any} audit={(audit.data||[]) as any} canApprove={["owner","admin","editor"].includes(profile.role)}/></main>;
+}

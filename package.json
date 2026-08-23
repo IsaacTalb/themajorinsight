@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "rm -rf .test-dist && tsc --ignoreConfig src/lib/editorial.ts src/lib/editorial.test.ts --outDir .test-dist --module commonjs --target es2020 --esModuleInterop --skipLibCheck --types node && node --test .test-dist/editorial.test.js && rm -rf .test-dist"
   },
   "dependencies": {
     "@supabase/supabase-js": "latest",
