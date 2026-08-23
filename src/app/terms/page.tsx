@@ -1,2 +1,5 @@
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
+export const metadata: Metadata = pageMetadata("Terms of Use", "Terms governing access to and use of The Major Insight.", "/terms");
 import { EditorialPage } from "@/components/EditorialPage";
 export default function Page(){return <EditorialPage eyebrow="Legal" title="Terms of Use" intro="The terms that govern access to and use of The Major Insight."><p>Last updated: August 23, 2026.</p><h2>Informational purpose</h2><p>Content is provided for general information, not financial, investment, tax, legal, or medical advice. You remain responsible for your decisions.</p><h2>Intellectual property</h2><p>Site content and branding are protected by applicable law and may not be republished or commercially exploited without permission.</p><h2>Acceptable use</h2><p>Do not disrupt the service, attempt unauthorized access, scrape at harmful scale, or use the site unlawfully.</p><h2>Disclaimer</h2><p>We work to provide accurate information but cannot guarantee that all content is complete, current, or error-free.</p></EditorialPage>}

@@ -1,2 +1,5 @@
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
+export const metadata: Metadata = pageMetadata("Contact", "Contact The Major Insight with news tips, feedback, corrections, or partnership inquiries.", "/contact");
 import { EditorialPage } from "@/components/EditorialPage"; import { siteConfig } from "@/lib/site";
 export default function Page(){const email=siteConfig.contactEmail;return <EditorialPage eyebrow="Inquiries" title="Contact" intro="Reach the right team with a tip, question, correction, or partnership inquiry."><h2>News tips and feedback</h2><p>{email ? <>Email <a className="text-link font-semibold" href={`mailto:${email}`}>{email}</a> and include relevant links or documents.</> : "Our editorial inbox is being configured. Please check back soon."}</p><h2>Corrections</h2><p>Include the article URL, the passage at issue, and supporting evidence. Review our Corrections Policy for details.</p><h2>Partnerships</h2><p>For advertising and sponsorship opportunities, tell us about your organization, audience, timing, and goals.</p></EditorialPage>}

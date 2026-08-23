@@ -7,6 +7,7 @@ import { sanitizeArticleHtml } from "@/lib/editorial";
 export type Article = {
   type: "Analysis" | "News" | "Explainer" | "Guide" | "Review" | "Comparison" | "Report" | "Opinion";
   title: string; slug: string; categorySlug: string; categoryName: string; excerpt: string;
+  seoTitle?: string; seoDescription?: string; canonicalUrl?: string;
   publishedAt: string; updatedAt: string; readingTime: string; focusKeyword: string; tags: string[];
   imageAlt: string; image?: { src: string; caption: string; credit: string };
   author: { name: string; slug: string; role: string; bio: string };
@@ -16,7 +17,7 @@ export type Article = {
 export type Pagination = { page?: number; pageSize?: number };
 export type ArticlePage = { articles: Article[]; page: number; pageSize: number; total: number; totalPages: number };
 
-const select = `title,slug,excerpt,content,content_type,published_at,updated_at,reading_time_minutes,focus_keyword,featured_image_url,featured_image_alt,featured_image_caption,featured_image_credit,categories!inner(name,slug),authors!inner(name,slug,position,bio),post_tags(tags(name,slug)),post_sources(label,url,sort_order)`;
+const select = `title,slug,excerpt,content,content_type,published_at,updated_at,reading_time_minutes,focus_keyword,seo_title,seo_description,canonical_url,featured_image_url,featured_image_alt,featured_image_caption,featured_image_credit,categories!inner(name,slug),authors!inner(name,slug,position,bio),post_tags(tags(name,slug)),post_sources(label,url,sort_order)`;
 
 function mapPost(row: any): Article {
   const content = row.content ?? {};
@@ -24,6 +25,7 @@ function mapPost(row: any): Article {
   const takeaways = Array.isArray(content.key_takeaways) ? content.key_takeaways.filter((x: unknown): x is string => typeof x === "string") : undefined;
   return {
     type: row.content_type, title: row.title, slug: row.slug, excerpt: row.excerpt,
+    seoTitle: row.seo_title || undefined, seoDescription: row.seo_description || undefined, canonicalUrl: row.canonical_url || undefined,
     categorySlug: row.categories.slug, categoryName: row.categories.name,
     publishedAt: row.published_at, updatedAt: row.updated_at,
     readingTime: `${row.reading_time_minutes || 1} min read`, focusKeyword: row.focus_keyword ?? "",
@@ -55,7 +57,15 @@ export async function getArticleBySlug(slug: string) {
   return data ? mapPost(data) : null;
 }
 
-export async function getArticlesByCategory(slug: string, pagination?: Pagination) { const page = await getArticles(pagination); return { ...page, articles: page.articles.filter((x) => x.categorySlug === slug) }; }
+export async function getArticlesByCategory(slug: string, pagination: Pagination = {}) {
+  const safePage = Math.max(1, pagination.page ?? 1), safeSize = Math.min(50, Math.max(1, pagination.pageSize ?? 12));
+  const client = createPublicSupabaseClient();
+  if (!client) { const matches = fallback().filter((x) => x.categorySlug === slug); return { articles: matches.slice((safePage - 1) * safeSize, safePage * safeSize), page: safePage, pageSize: safeSize, total: matches.length, totalPages: Math.ceil(matches.length / safeSize) }; }
+  const from = (safePage - 1) * safeSize;
+  const { data, count, error } = await client.from("posts").select(select, { count: "exact" }).eq("status", "published").lte("published_at", new Date().toISOString()).eq("categories.slug", slug).order("published_at", { ascending: false }).range(from, from + safeSize - 1);
+  if (error) throw new Error(`Unable to load category articles: ${error.message}`);
+  return { articles: (data ?? []).map(mapPost), page: safePage, pageSize: safeSize, total: count ?? 0, totalPages: Math.ceil((count ?? 0) / safeSize) };
+}
 export async function getArticlesByTag(slug: string, pagination?: Pagination) { const page = await getArticles(pagination); return { ...page, articles: page.articles.filter((x) => x.tags.some((tag) => tag.toLowerCase().replaceAll(" ", "-") === slug)) }; }
 export async function getArticlesByAuthor(slug: string, pagination?: Pagination) { const page = await getArticles(pagination); return { ...page, articles: page.articles.filter((x) => x.author.slug === slug) }; }
 export async function getLatestInsights(limit = 6) { return (await getArticles({ pageSize: limit })).articles; }

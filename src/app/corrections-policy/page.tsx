@@ -1,2 +1,5 @@
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
+export const metadata: Metadata = pageMetadata("Corrections Policy", "How to report an error and how The Major Insight corrects and updates published work.", "/corrections-policy");
 import { EditorialPage } from "@/components/EditorialPage";
 export default function Page(){return <EditorialPage eyebrow="Trust center" title="Corrections Policy" intro="We correct meaningful errors promptly, transparently, and in proportion to their impact."><h2>How corrections work</h2><p>When a factual error is confirmed, we update the article and add a clear correction or editor’s note explaining the material change. Minor spelling or formatting fixes may be made without a note.</p><h2>Send a correction</h2><p>Please use our contact page and include the article URL, the statement at issue, and a reliable source supporting the correction.</p><h2>Updates</h2><p>Developing stories may receive new information without a correction. Published and updated dates help readers understand timing.</p></EditorialPage>}

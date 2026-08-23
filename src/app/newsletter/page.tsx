@@ -1,2 +1,5 @@
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
+export const metadata: Metadata = pageMetadata("The Major Brief Newsletter", "Subscribe to The Major Brief for essential context across markets, AI, science, and culture.", "/newsletter");
 import { NewsletterSignup } from "@/components/NewsletterSignup"; import { EditorialPage } from "@/components/EditorialPage";
 export default function Page(){return <EditorialPage eyebrow="Newsletter" title="The Major Brief" intro="The most consequential ideas of the week, edited into one clear, useful briefing." aside={<><p className="eyebrow">At a glance</p><p className="mt-3">One email. Essential context. No noise.</p></>}><h2>What you’ll receive</h2><ul><li>Decisive developments across markets, AI, science, and culture.</li><li>Concise explanations of why each story matters.</li><li>Our strongest analysis, guides, and reporting.</li></ul><div className="mt-8"><NewsletterSignup /></div><p className="text-sm text-muted">You can unsubscribe at any time. Read our Privacy Policy for details.</p></EditorialPage>}
