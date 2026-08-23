@@ -1,3 +1,5 @@
-import { EmptyState, PageHeader } from "@/components/admin/AdminShell";
-import { getRows } from "@/lib/admin-data";
-export default async function Page() { const rows = await getRows("media_assets", "id,storage_path,mime_type"); return <main className="admin-main"><PageHeader eyebrow="Editorial" title="Media" description="Browse uploaded editorial assets and their metadata." />{rows.length ? <div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>Name</th><th>Details</th></tr></thead><tbody>{rows.map((row,i)=><tr key={String(row.id??i)}><td>{String(row.name ?? row.topic ?? row.email ?? row.storage_path ?? "Record")}</td><td>{String(row.slug ?? row.status ?? row.source ?? row.mime_type ?? "—")}</td></tr>)}</tbody></table></div> : <EmptyState title="No records yet" detail="Records will appear here when they are available in Supabase." />}</main>; }
+import { PageHeader } from "@/components/admin/AdminShell";
+import { MediaLibrary } from "@/components/admin/MediaLibrary";
+import { requireAdmin } from "@/lib/admin-auth";
+
+export default async function Page(){const {supabase,profile}=await requireAdmin();const {data}=await supabase.from("media_assets").select("*").order("created_at",{ascending:false}).limit(200);const {data:posts}=await supabase.from("posts").select("id,title").order("updated_at",{ascending:false}).limit(100);return <main className="admin-main media-page"><PageHeader eyebrow="Editorial" title="Media library" description="Upload licensed editorial images to R2 and manage searchable metadata."/><MediaLibrary initialAssets={(data||[]) as any[]} posts={(posts||[]) as any[]} canDelete={["owner","admin"].includes(profile.role)}/></main>}
