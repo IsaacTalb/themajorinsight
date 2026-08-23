@@ -4,7 +4,7 @@ import type { Article } from "@/lib/articles";
 export function ArticleCard({ article }: { article: Article }) {
   return (
     <article className="group border-t border-ink pt-5">
-      <p className="eyebrow">{article.categoryName}</p>
+      <p className="eyebrow">{article.categoryName} · {article.type}</p>
       <h3 className="mt-3 font-editorial text-[1.7rem] font-semibold leading-[1.12] tracking-[-0.02em] md:text-3xl">
         <Link className="transition-colors group-hover:text-accent" href={`/${article.categorySlug}/${article.slug}`}>{article.title}</Link>
       </h3>

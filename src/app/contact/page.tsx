@@ -1,14 +1,2 @@
-import { siteConfig } from "@/lib/site";
-
-export default function ContactPage() {
-  return (
-    <main className="site-container max-w-4xl py-16 md:py-24">
-      <p className="eyebrow">Inquiries</p><h1 className="display-title mt-4">Contact</h1><div className="mt-8 border-t border-ink pt-8">
-      {siteConfig.contactEmail ? (
-        <p className="text-lg leading-8 text-charcoal">For tips, corrections, partnerships, and advertising inquiries, contact <a className="text-link font-semibold" href={`mailto:${siteConfig.contactEmail}`}>{siteConfig.contactEmail}</a>.</p>
-      ) : (
-        <p className="text-lg leading-8 text-charcoal">Contact details will be published here when the editorial inbox is configured.</p>
-      )}</div>
-    </main>
-  );
-}
+import { EditorialPage } from "@/components/EditorialPage"; import { siteConfig } from "@/lib/site";
+export default function Page(){const email=siteConfig.contactEmail;return <EditorialPage eyebrow="Inquiries" title="Contact" intro="Reach the right team with a tip, question, correction, or partnership inquiry."><h2>News tips and feedback</h2><p>{email ? <>Email <a className="text-link font-semibold" href={`mailto:${email}`}>{email}</a> and include relevant links or documents.</> : "Our editorial inbox is being configured. Please check back soon."}</p><h2>Corrections</h2><p>Include the article URL, the passage at issue, and supporting evidence. Review our Corrections Policy for details.</p><h2>Partnerships</h2><p>For advertising and sponsorship opportunities, tell us about your organization, audience, timing, and goals.</p></EditorialPage>}

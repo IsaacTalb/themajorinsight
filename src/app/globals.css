@@ -99,4 +99,9 @@ button, input { font: inherit; }
   }
 
   .prose-editorial p + p { margin-top: 1.5em; }
+
+  .policy-copy { @apply text-[1.05rem] leading-8 text-charcoal; }
+  .policy-copy h2 { @apply mt-10 border-t border-rule pt-6 font-editorial text-2xl font-semibold text-ink; }
+  .policy-copy p { @apply mt-4; }
+  .policy-copy ul { @apply mt-4 list-disc space-y-2 pl-5; }
 }

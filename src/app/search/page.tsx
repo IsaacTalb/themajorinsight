@@ -1,0 +1,7 @@
+import { ArticleCard } from "@/components/ArticleCard";
+import { articles } from "@/lib/articles";
+
+export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+  const q = (await searchParams).q?.trim() ?? ""; const query = q.toLowerCase(); const results = query ? articles.filter(a => [a.title,a.excerpt,a.categoryName,...a.tags].join(" ").toLowerCase().includes(query)) : [];
+  return <main className="site-container py-12 md:py-20"><header className="border-b border-ink pb-10"><p className="eyebrow">Discover</p><h1 className="display-title mt-4">Search insights</h1><form className="mt-8 flex max-w-2xl gap-2" action="/search"><label className="sr-only" htmlFor="q">Search</label><input id="q" name="q" defaultValue={q} placeholder="Markets, AI, science…" className="min-w-0 flex-1 border border-ink bg-transparent px-4 py-3 outline-none"/><button className="button-primary">Search</button></form></header>{q && <section className="py-10"><p className="text-sm text-muted">{results.length} result{results.length === 1 ? "" : "s"} for “{q}”</p><div className="mt-8 grid gap-8 md:grid-cols-2 lg:grid-cols-3">{results.map(a=><ArticleCard key={a.slug} article={a}/>)}</div>{!results.length && <p className="mt-10 max-w-xl text-lg">No insights matched. Try a broader topic or browse one of our sections.</p>}</section>}</main>;
+}

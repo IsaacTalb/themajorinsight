@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { categories, siteConfig } from "@/lib/site";
 
-const links = ["About", "Contact", "Editorial Policy", "Privacy Policy", "Terms", "Advertise"];
+const links = ["About", "Contact", "Editorial Policy", "Corrections Policy", "Privacy Policy", "Terms", "Cookie Policy", "Advertise"];
 
 export function Footer() {
   return (

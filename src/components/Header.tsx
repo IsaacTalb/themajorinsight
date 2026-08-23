@@ -2,6 +2,7 @@ import Link from "next/link";
 import { categories, siteConfig } from "@/lib/site";
 
 const utilityLinks = [
+  { href: "/search", label: "Search" },
   { href: "/about", label: "About" },
   { href: "/newsletter", label: "Newsletters" }
 ];

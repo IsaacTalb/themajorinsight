@@ -1,11 +1,2 @@
-import { siteConfig } from "@/lib/site";
-
-export default function EditorialPolicyPage() {
-  return (
-    <main className="site-container max-w-4xl py-16 md:py-24">
-      <p className="eyebrow">Trust center</p><h1 className="display-title mt-4">Editorial Policy</h1>
-      <div className="mt-8 border-t border-ink pt-8 text-lg leading-8 text-charcoal"><p>{siteConfig.name} uses human editorial review for every published story. Automated tools may assist with research organization, trend monitoring, formatting, and quality checks, but editors are responsible for accuracy, clarity, sourcing, and final publication decisions.</p>
-      <p className="mt-5">Finance, health technology, investing, and business coverage is educational and informational only. We do not provide financial, investment, tax, legal, or medical advice.</p></div>
-    </main>
-  );
-}
+import { EditorialPage } from "@/components/EditorialPage"; import { siteConfig } from "@/lib/site";
+export default function Page(){return <EditorialPage eyebrow="Trust center" title="Editorial Policy" intro="The standards behind every insight we publish."><h2>Accuracy and review</h2><p>{siteConfig.name} uses human editorial review for every published story. Editors are responsible for accuracy, clarity, sourcing, and final publication decisions.</p><h2>Story types</h2><p>We label analysis, news, explainers, guides, reviews, comparisons, reports, and opinion so readers understand the purpose and evidentiary standard of a piece.</p><h2>Sources and AI</h2><p>We prioritize primary, authoritative sources. Automated tools may assist research organization and quality checks, but do not replace editorial judgment.</p><h2>Conflicts and commerce</h2><p>Advertising and affiliate relationships are disclosed and kept separate from editorial conclusions.</p></EditorialPage>}

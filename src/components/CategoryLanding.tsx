@@ -7,6 +7,7 @@ type Category = (typeof categories)[number];
 
 export function CategoryLanding({ category }: { category: Category }) {
   const categoryArticles = getArticlesByCategory(category.slug);
+  const [lead, ...latest] = categoryArticles;
   return (
     <main className="site-container py-12 md:py-20">
       <header className="grid gap-8 border-b border-ink pb-10 md:grid-cols-[1fr_1fr] md:items-end md:pb-14">
@@ -16,12 +17,15 @@ export function CategoryLanding({ category }: { category: Category }) {
           <div className="mt-6 flex flex-wrap gap-2" aria-label="Topics">{category.topics.map((topic) => <span key={topic} className="tag">{topic}</span>)}</div>
         </div>
       </header>
+      {lead && <section className="grid gap-8 border-b border-rule py-10 md:grid-cols-[1.4fr_1fr] md:py-14"><div className="min-h-56 bg-[linear-gradient(135deg,#dedbd2,#f5f3ee)]" aria-hidden="true"/><div className="self-center"><p className="eyebrow">Lead story · {lead.type}</p><h2 className="mt-3 font-editorial text-4xl font-semibold leading-tight"><a href={`/${lead.categorySlug}/${lead.slug}`} className="hover:text-accent">{lead.title}</a></h2><p className="mt-4 text-muted">{lead.excerpt}</p><p className="mt-5 text-xs font-semibold uppercase tracking-wider text-muted">{lead.readingTime}</p></div></section>}
       <section className="py-12 md:py-16" aria-labelledby="latest-coverage">
         <div className="mb-9 flex items-end justify-between border-b border-rule pb-4">
           <div><p className="eyebrow">Latest coverage</p><h2 id="latest-coverage" className="mt-2 font-editorial text-3xl font-semibold md:text-4xl">Analysis and reporting</h2></div>
         </div>
-        <div className="grid gap-x-8 gap-y-12 md:grid-cols-2">{categoryArticles.map((article) => <ArticleCard key={article.slug} article={article} />)}</div>
+        <div className="grid gap-x-8 gap-y-12 md:grid-cols-2">{(latest.length ? latest : categoryArticles).map((article) => <ArticleCard key={article.slug} article={article} />)}</div>
       </section>
+      <section className="grid gap-10 border-y border-ink py-10 md:grid-cols-2"><div><p className="eyebrow">Popular</p><h2 className="mt-2 font-editorial text-3xl font-semibold">Most read in {category.name}</h2>{lead && <a className="text-link mt-5 block font-semibold" href={`/${lead.categorySlug}/${lead.slug}`}>{lead.title}</a>}</div><div><p className="eyebrow">Explore subtopics</p><div className="mt-4 flex flex-wrap gap-2">{category.topics.map(topic => <a className="tag" key={topic} href={`/tag/${topic.toLowerCase().replaceAll(" ", "-")}`}>{topic}</a>)}</div></div></section>
+      <nav className="flex items-center justify-between py-10" aria-label="Pagination"><span className="text-sm text-muted">Page 1 of 1</span><button className="button-secondary" disabled>Load more stories</button></nav>
       <NewsletterSignup />
     </main>
   );
