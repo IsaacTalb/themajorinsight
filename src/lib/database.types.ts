@@ -13,6 +13,11 @@ export type Database = {
       post_tags: Table<Row>;
       post_sources: Table<Row>;
       newsletter_subscribers: Table<Row, { email: string; name?: string; status?: string; source?: string; interests?: string[] }>;
+      admin_profiles: Table<Row>;
+      media_assets: Table<Row>;
+      trend_topics: Table<Row>;
+      site_settings: Table<Row>;
+      audit_logs: Table<Row>;
     };
     Views: Record<string, never>;
     Functions: { increment_post_view: { Args: { post_slug: string }; Returns: number } };
