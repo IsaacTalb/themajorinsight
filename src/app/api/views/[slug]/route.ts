@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { callSupabaseRpc, isSupabaseConfigured } from "@/lib/supabase";
+import { callSupabaseRpc, isSupabaseAdminConfigured } from "@/lib/supabase";
 
 type RouteContext = { params: Promise<{ slug: string }> };
 
 export async function POST(_: Request, { params }: RouteContext) {
-  if (!isSupabaseConfigured) return NextResponse.json({ views: null });
+  if (!isSupabaseAdminConfigured) return NextResponse.json({ views: null });
   const { slug } = await params;
 
   try {

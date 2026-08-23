@@ -1,7 +1,8 @@
-import { articles } from "@/lib/articles";
+import { getLatestInsights } from "@/lib/articles";
 import { siteConfig } from "@/lib/site";
 
-export function GET() {
+export async function GET() {
+  const articles = await getLatestInsights(50);
   const items = articles
     .map((article) => {
       const url = `${siteConfig.url}/${article.categorySlug}/${article.slug}`;

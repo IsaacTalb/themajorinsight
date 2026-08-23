@@ -1,132 +1,77 @@
+import "server-only";
+
+import { fixtureArticles } from "@/lib/article-fixtures";
+import { createAdminSupabaseClient, createPublicSupabaseClient } from "@/lib/supabase";
+
 export type Article = {
   type: "Analysis" | "News" | "Explainer" | "Guide" | "Review" | "Comparison" | "Report" | "Opinion";
-  title: string;
-  slug: string;
-  categorySlug: string;
-  categoryName: string;
-  excerpt: string;
-  publishedAt: string;
-  updatedAt: string;
-  readingTime: string;
-  focusKeyword: string;
-  tags: string[];
-  imageAlt: string;
-  image?: { src: string; caption: string; credit: string };
+  title: string; slug: string; categorySlug: string; categoryName: string; excerpt: string;
+  publishedAt: string; updatedAt: string; readingTime: string; focusKeyword: string; tags: string[];
+  imageAlt: string; image?: { src: string; caption: string; credit: string };
   author: { name: string; slug: string; role: string; bio: string };
-  keyTakeaways?: string[];
-  body: string[];
-  sources: { label: string; url: string }[];
+  keyTakeaways?: string[]; body: string[]; sources: { label: string; url: string }[];
 };
 
-export const articles: Article[] = [
-  {
-    type: "Analysis",
-    title: "Current Mortgage Rate Trends Homebuyers Should Watch",
-    slug: "current-mortgage-rate-trends-homebuyers-should-watch",
-    categorySlug: "finance-markets",
-    categoryName: "Finance & Markets",
-    excerpt:
-      "A practical briefing template for mortgage rate coverage, refinancing decisions, affordability pressure, and lender comparison updates.",
-    publishedAt: "2026-08-05",
-    updatedAt: "2026-08-05",
-    readingTime: "4 min read",
-    focusKeyword: "mortgage rate trends",
-    tags: ["Mortgage rates", "Refinancing", "Housing market", "Personal finance"],
-    imageAlt: "Homebuyer reviewing mortgage rate options on a laptop.",
-    author: { name: "The Major Insight Desk", slug: "major-insight-desk", role: "Editorial team", bio: "The newsroom team covering the forces reshaping markets, technology, science, and culture." },
-    keyTakeaways: ["Rate changes affect affordability as much as asking prices.", "Compare APR, fees, and loan terms—not only the headline rate.", "Treat forecasts as context, not guarantees."],
-    body: [
-      "Mortgage rate coverage should be updated frequently because readers usually arrive with a decision in mind: buy now, wait, refinance, or compare lenders.",
-      "The Major Insight format for this topic should lead with what changed, why it matters, who is affected, and which terms readers should compare before making a financial decision.",
-      "Every finance article should include educational context and avoid promises, guarantees, or individualized financial advice. The best version of this page will eventually connect to rate tables, calculators, and lender comparison resources."
-    ],
-    sources: [
-      { label: "Federal Reserve economic data", url: "https://fred.stlouisfed.org/" },
-      { label: "Consumer Financial Protection Bureau", url: "https://www.consumerfinance.gov/" }
-    ]
-  },
-  {
-    type: "Comparison",
-    title: "Best AI Tools for Small Business Automation",
-    slug: "best-ai-tools-small-business-automation",
-    categorySlug: "tech-ai",
-    categoryName: "Tech & AI",
-    excerpt:
-      "A search-focused comparison framework for founders, operators, freelancers, and small teams evaluating AI productivity software.",
-    publishedAt: "2026-08-05",
-    updatedAt: "2026-08-05",
-    readingTime: "5 min read",
-    focusKeyword: "best AI tools for small business",
-    tags: ["AI tools", "Automation", "SaaS", "Small business"],
-    imageAlt: "Small business owner comparing AI automation dashboards.",
-    author: { name: "The Major Insight Desk", slug: "major-insight-desk", role: "Editorial team", bio: "The newsroom team covering the forces reshaping markets, technology, science, and culture." },
-    keyTakeaways: ["Start with one clearly defined workflow.", "Review privacy, integrations, and total cost before adopting a tool.", "Measure saved time and output quality during a trial."],
-    body: [
-      "Small businesses usually adopt AI tools when they solve a direct workflow problem: writing, support, scheduling, reporting, lead generation, or internal knowledge search.",
-      "The Major Insight comparison format should evaluate pricing, ease of use, integrations, privacy, customer support, and the specific business workflows each product improves.",
-      "The long-term SEO opportunity is to maintain updated comparison tables and link them to deeper reviews for each tool."
-    ],
-    sources: [
-      { label: "NIST AI Risk Management Framework", url: "https://www.nist.gov/itl/ai-risk-management-framework" },
-      { label: "FTC business guidance", url: "https://www.ftc.gov/business-guidance" }
-    ]
-  },
-  {
-    type: "Explainer",
-    title: "What Green Energy Breakthroughs Mean for EV Owners",
-    slug: "green-energy-breakthroughs-ev-owners",
-    categorySlug: "science-future",
-    categoryName: "Science & Future",
-    excerpt:
-      "A future-facing explainer connecting climate innovation, charging infrastructure, batteries, and consumer EV decisions.",
-    publishedAt: "2026-08-05",
-    updatedAt: "2026-08-05",
-    readingTime: "4 min read",
-    focusKeyword: "green energy breakthroughs EV owners",
-    tags: ["Green energy", "EVs", "Battery tech", "Climate innovation"],
-    imageAlt: "Electric vehicle charging near solar panels at sunset.",
-    author: { name: "The Major Insight Desk", slug: "major-insight-desk", role: "Editorial team", bio: "The newsroom team covering the forces reshaping markets, technology, science, and culture." },
-    body: [
-      "Green energy coverage works best when it explains how research, policy, and infrastructure affect everyday costs for readers.",
-      "For EV owners, the most useful reporting connects battery improvements, charging availability, grid reliability, and incentives in one practical framework.",
-      "This article template can later be expanded with maps, incentives, charging cost calculators, and utility-rate explainers."
-    ],
-    sources: [
-      { label: "U.S. Department of Energy", url: "https://www.energy.gov/" },
-      { label: "National Renewable Energy Laboratory", url: "https://www.nrel.gov/" }
-    ]
-  },
-  {
-    type: "Analysis",
-    title: "Why Viral Internet Trends Become Business News",
-    slug: "why-viral-internet-trends-become-business-news",
-    categorySlug: "pulse",
-    categoryName: "Pulse",
-    excerpt:
-      "A newsroom template for turning social momentum into useful context about platforms, creators, brands, and audience behavior.",
-    publishedAt: "2026-08-05",
-    updatedAt: "2026-08-05",
-    readingTime: "3 min read",
-    focusKeyword: "viral internet trends business news",
-    tags: ["Viral trends", "Creator economy", "Social media", "Internet culture"],
-    imageAlt: "Creator reviewing social media analytics on a phone.",
-    author: { name: "The Major Insight Desk", slug: "major-insight-desk", role: "Editorial team", bio: "The newsroom team covering the forces reshaping markets, technology, science, and culture." },
-    body: [
-      "Viral stories can bring large traffic spikes, but The Major Insight should treat them as signals rather than gossip.",
-      "The strongest Pulse coverage explains what happened, where it started, why it spread, and what it means for creators, platforms, advertisers, or consumers.",
-      "This workflow keeps trending content useful while still capturing high-volume search and social discovery traffic."
-    ],
-    sources: [
-      { label: "Reddit trends", url: "https://www.reddit.com/" },
-      { label: "Google Trends", url: "https://trends.google.com/" }
-    ]
-  }
-];
+export type Pagination = { page?: number; pageSize?: number };
+export type ArticlePage = { articles: Article[]; page: number; pageSize: number; total: number; totalPages: number };
 
-export function getArticleBySlug(slug: string) {
-  return articles.find((article) => article.slug === slug);
+const select = `title,slug,excerpt,content,content_type,published_at,updated_at,reading_time_minutes,focus_keyword,featured_image_url,featured_image_alt,featured_image_caption,featured_image_credit,categories!inner(name,slug),authors!inner(name,slug,position,bio),post_tags(tags(name,slug)),post_sources(label,url,sort_order)`;
+
+function mapPost(row: any): Article {
+  const content = row.content ?? {};
+  const paragraphs = Array.isArray(content.paragraphs) ? content.paragraphs.filter((x: unknown): x is string => typeof x === "string") : [];
+  const takeaways = Array.isArray(content.key_takeaways) ? content.key_takeaways.filter((x: unknown): x is string => typeof x === "string") : undefined;
+  return {
+    type: row.content_type, title: row.title, slug: row.slug, excerpt: row.excerpt,
+    categorySlug: row.categories.slug, categoryName: row.categories.name,
+    publishedAt: row.published_at, updatedAt: row.updated_at,
+    readingTime: `${row.reading_time_minutes || 1} min read`, focusKeyword: row.focus_keyword ?? "",
+    tags: (row.post_tags ?? []).map((x: any) => x.tags.name), imageAlt: row.featured_image_alt ?? "",
+    image: row.featured_image_url ? { src: row.featured_image_url, caption: row.featured_image_caption ?? "", credit: row.featured_image_credit ?? "" } : undefined,
+    author: { name: row.authors.name, slug: row.authors.slug, role: row.authors.position, bio: row.authors.bio ?? "" },
+    keyTakeaways: takeaways, body: paragraphs,
+    sources: (row.post_sources ?? []).sort((a: any, b: any) => a.sort_order - b.sort_order).map((x: any) => ({ label: x.label, url: x.url }))
+  };
 }
 
-export function getArticlesByCategory(categorySlug: string) {
-  return articles.filter((article) => article.categorySlug === categorySlug);
+function fallback(items = fixtureArticles): Article[] { return items as Article[]; }
+
+export async function getArticles({ page = 1, pageSize = 12 }: Pagination = {}): Promise<ArticlePage> {
+  const safePage = Math.max(1, page); const safeSize = Math.min(50, Math.max(1, pageSize));
+  const client = createPublicSupabaseClient();
+  if (!client) { const items = fallback(); return { articles: items.slice((safePage - 1) * safeSize, safePage * safeSize), page: safePage, pageSize: safeSize, total: items.length, totalPages: Math.ceil(items.length / safeSize) }; }
+  const from = (safePage - 1) * safeSize;
+  const { data, count, error } = await client.from("posts").select(select, { count: "exact" }).eq("status", "published").lte("published_at", new Date().toISOString()).order("published_at", { ascending: false }).range(from, from + safeSize - 1);
+  if (error) throw new Error(`Unable to load published articles: ${error.message}`);
+  return { articles: (data ?? []).map(mapPost), page: safePage, pageSize: safeSize, total: count ?? 0, totalPages: Math.ceil((count ?? 0) / safeSize) };
+}
+
+export async function getArticleBySlug(slug: string) {
+  const client = createPublicSupabaseClient();
+  if (!client) return fallback().find((article) => article.slug === slug) ?? null;
+  const { data, error } = await client.from("posts").select(select).eq("slug", slug).eq("status", "published").lte("published_at", new Date().toISOString()).maybeSingle();
+  if (error) throw new Error(`Unable to load article: ${error.message}`);
+  return data ? mapPost(data) : null;
+}
+
+export async function getArticlesByCategory(slug: string, pagination?: Pagination) { const page = await getArticles(pagination); return { ...page, articles: page.articles.filter((x) => x.categorySlug === slug) }; }
+export async function getArticlesByTag(slug: string, pagination?: Pagination) { const page = await getArticles(pagination); return { ...page, articles: page.articles.filter((x) => x.tags.some((tag) => tag.toLowerCase().replaceAll(" ", "-") === slug)) }; }
+export async function getArticlesByAuthor(slug: string, pagination?: Pagination) { const page = await getArticles(pagination); return { ...page, articles: page.articles.filter((x) => x.author.slug === slug) }; }
+export async function getLatestInsights(limit = 6) { return (await getArticles({ pageSize: limit })).articles; }
+export async function getFeaturedInsights(limit = 6) { return getFlaggedArticles("is_featured", limit); }
+export async function getTrendingInsights(limit = 6) { return getFlaggedArticles("view_count", limit); }
+
+async function getFlaggedArticles(field: "is_featured" | "view_count", limit: number) {
+  const client = createPublicSupabaseClient(); if (!client) return fallback().slice(0, limit);
+  let query = client.from("posts").select(select).eq("status", "published").lte("published_at", new Date().toISOString());
+  query = field === "is_featured" ? query.eq(field, true).order("published_at", { ascending: false }) : query.order(field, { ascending: false });
+  const { data, error } = await query.limit(limit); if (error) throw new Error(`Unable to load insights: ${error.message}`); return (data ?? []).map(mapPost);
+}
+
+/** Trusted editorial access; callers must authenticate and authorize an admin first. */
+export async function getAdminPosts(status?: "draft" | "review" | "scheduled" | "published" | "archived", pagination: Pagination = {}) {
+  const page = Math.max(1, pagination.page ?? 1), pageSize = Math.min(100, Math.max(1, pagination.pageSize ?? 25));
+  let query = createAdminSupabaseClient().from("posts").select("*", { count: "exact" }).order("updated_at", { ascending: false });
+  if (status) query = query.eq("status", status);
+  return query.range((page - 1) * pageSize, page * pageSize - 1);
 }

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { isSupabaseConfigured, writeToSupabase } from "@/lib/supabase";
+import { isSupabaseAdminConfigured, writeToSupabase } from "@/lib/supabase";
 import { siteConfig } from "@/lib/site";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -12,12 +12,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, message: "A valid email is required." }, { status: 400 });
   }
 
-  if (!isSupabaseConfigured) {
+  if (!isSupabaseAdminConfigured) {
     return NextResponse.json({ ok: false, message: "Newsletter signup is not configured yet." }, { status: 503 });
   }
 
-  const response = await writeToSupabase("newsletter_subscribers", { email, source: "website" }, "resolution=ignore-duplicates,return=minimal");
-  if (!response.ok) {
+  const { error } = await writeToSupabase("newsletter_subscribers", { email, source: "website" });
+  if (error) {
     return NextResponse.json({ ok: false, message: "We could not save your subscription. Please try again." }, { status: 502 });
   }
 
