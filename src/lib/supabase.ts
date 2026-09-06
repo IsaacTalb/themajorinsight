@@ -26,7 +26,7 @@ export function createAdminSupabaseClient(): SupabaseClient<Database> {
 
 export async function writeToSupabase(table: "newsletter_subscribers", body: Database["public"]["Tables"]["newsletter_subscribers"]["Insert"]) {
   const client = createAdminSupabaseClient();
-  return client.from(table).upsert(body, { onConflict: "email", ignoreDuplicates: true });
+  return client.from(table).upsert(body, { onConflict: "email", ignoreDuplicates: false });
 }
 
 export async function callSupabaseRpc<T>(functionName: "increment_post_view", body: { post_slug: string }) {

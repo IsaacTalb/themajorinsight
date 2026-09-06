@@ -49,7 +49,7 @@ export const categories = [
     deck: "Viral trends, creator economy, social platforms, streaming, entertainment, and internet culture.",
     topics: ["Viral trends", "Creator economy", "Streaming", "Social media", "Entertainment", "Internet culture"]
   }
-];
+] as const;
 
 export const sampleArticles = [
   {
@@ -74,3 +74,16 @@ export const sampleArticles = [
     metric: "Evergreen"
   }
 ];
+
+export const monetizationConfig = {
+  adsEnabled: process.env.NEXT_PUBLIC_ADS_ENABLED === "true",
+  consentRequired: process.env.NEXT_PUBLIC_ADS_CONSENT_REQUIRED === "true",
+  adClient: process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID?.trim() || null,
+  adSlots: {
+    articleIntro: process.env.NEXT_PUBLIC_AD_SLOT_ARTICLE_INTRO?.trim() || null,
+    articleMid: process.env.NEXT_PUBLIC_AD_SLOT_ARTICLE_MID?.trim() || null,
+    articleRelated: process.env.NEXT_PUBLIC_AD_SLOT_ARTICLE_RELATED?.trim() || null,
+    sidebar: process.env.NEXT_PUBLIC_AD_SLOT_SIDEBAR?.trim() || null,
+    homepageSections: process.env.NEXT_PUBLIC_AD_SLOT_HOME_SECTION?.trim() || null
+  }
+} as const;
