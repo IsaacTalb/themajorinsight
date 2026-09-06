@@ -1,5 +1,5 @@
 import { EditorialPage } from "@/components/EditorialPage";
-import { workerConfig } from "@/lib/worker-config";
+import { workerConfig, workerDeployment } from "@/lib/worker-config";
 
 export default function Page() {
   return (
@@ -12,12 +12,14 @@ export default function Page() {
         <li>Never publishes final editorial content automatically.</li>
       </ul>
       <h2>Cron jobs</h2>
-      <ul>
-        {workerConfig.cron.map((job) => <li key={job}>{job}</li>)}
-      </ul>
+      <ul>{workerConfig.cron.map((job) => <li key={job}>{job}</li>)}</ul>
       <h2>Approved source types</h2>
+      <ul>{workerConfig.sources.map((source) => <li key={source}>{source}</li>)}</ul>
+      <h2>Deployment</h2>
       <ul>
-        {workerConfig.sources.map((source) => <li key={source}>{source}</li>)}
+        <li>Runtime: {workerDeployment.runtime}</li>
+        <li>Authentication: {workerDeployment.auth}</li>
+        <li>Secrets: {workerDeployment.secrets.join(", ")}</li>
       </ul>
       <p className="text-sm text-muted">{workerConfig.note}</p>
     </EditorialPage>
