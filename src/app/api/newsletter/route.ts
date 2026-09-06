@@ -30,7 +30,11 @@ export async function POST(request: Request) {
     email,
     source,
     interests,
-    status: "pending_confirmation"
+    status: "pending_confirmation",
+    confirmation_status: "pending",
+    unsubscribe_token: crypto.randomUUID(),
+    bounce_state: "clean",
+    signup_source: source
   });
 
   if (error) {
