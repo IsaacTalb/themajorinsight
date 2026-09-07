@@ -12,16 +12,19 @@ export const isSupabaseAdminConfigured = Boolean(supabaseUrl && serviceRoleKey);
 
 const options = { auth: { persistSession: false, autoRefreshToken: false } } as const;
 
-/** RLS-constrained client for server-rendered public content. */
-export function createPublicSupabaseClient(): SupabaseClient<Database> | null {
-  if (!supabaseUrl || !anonKey) return null;
-  return createClient<Database>(supabaseUrl, anonKey, options);
+function requireConfig(name: string, value: string | undefined) {
+  if (!value) throw new Error(`${name} is not configured`);
+  return value;
 }
 
-/** Service-role client. Import only from trusted server routes/actions. */
+export function createPublicSupabaseClient(): SupabaseClient<Database> | null {
+  if (!supabaseUrl || !anonKey) return null;
+  return createClient<Database>(requireConfig("NEXT_PUBLIC_SUPABASE_URL", supabaseUrl), requireConfig("NEXT_PUBLIC_SUPABASE_ANON_KEY", anonKey), options);
+}
+
 export function createAdminSupabaseClient(): SupabaseClient<Database> {
   if (!supabaseUrl || !serviceRoleKey) throw new Error("Supabase service role is not configured");
-  return createClient<Database>(supabaseUrl, serviceRoleKey, options);
+  return createClient<Database>(requireConfig("NEXT_PUBLIC_SUPABASE_URL", supabaseUrl), requireConfig("SUPABASE_SERVICE_ROLE_KEY", serviceRoleKey), options);
 }
 
 export async function writeToSupabase(table: "newsletter_subscribers", body: Database["public"]["Tables"]["newsletter_subscribers"]["Insert"]) {

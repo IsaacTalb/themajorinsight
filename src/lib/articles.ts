@@ -79,10 +79,10 @@ async function getFlaggedArticles(field: "is_featured" | "view_count", limit: nu
   const { data, error } = await query.limit(limit); if (error) throw new Error(`Unable to load insights: ${error.message}`); return (data ?? []).map(mapPost);
 }
 
-/** Trusted editorial access; callers must authenticate and authorize an admin first. */
 export async function getAdminPosts(status?: "draft" | "review" | "scheduled" | "published" | "archived", pagination: Pagination = {}) {
   const page = Math.max(1, pagination.page ?? 1), pageSize = Math.min(100, Math.max(1, pagination.pageSize ?? 25));
-  let query = createAdminSupabaseClient().from("posts").select("*", { count: "exact" }).order("updated_at", { ascending: false });
+  const client = createAdminSupabaseClient();
+  let query = client.from("posts").select("*", { count: "exact" }).order("updated_at", { ascending: false });
   if (status) query = query.eq("status", status);
   return query.range((page - 1) * pageSize, page * pageSize - 1);
 }

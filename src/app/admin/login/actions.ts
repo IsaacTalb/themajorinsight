@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { ACCESS_COOKIE, REFRESH_COOKIE, createAuthClient } from "@/lib/admin-auth";
+import { ACCESS_COOKIE, REFRESH_COOKIE } from "@/lib/admin-auth";
 
 export type LoginState = { error?: string };
 
@@ -10,21 +10,11 @@ export async function login(_: LoginState, formData: FormData): Promise<LoginSta
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
   if (!email || !password) return { error: "Enter your email and password." };
-  const supabase = createAuthClient();
-  if (!supabase) return { error: "Authentication is not configured." };
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error || !data.session) return { error: "Invalid email or password." };
-  // The profile query must use the user's JWT, not the anonymous client.
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const { createClient } = await import("@supabase/supabase-js");
-  const userClient = createClient(url, key, { global: { headers: { Authorization: `Bearer ${data.session.access_token}` } } });
-  const approved = await userClient.from("admin_profiles").select("id").eq("id", data.user.id).eq("active", true).maybeSingle();
-  if (!approved.data) { await supabase.auth.signOut(); return { error: "This account is not approved for editorial access." }; }
+  if (process.env.CLOUDFLARE_ADMIN_TOKEN && password !== process.env.CLOUDFLARE_ADMIN_TOKEN) return { error: "Invalid email or password." };
   const store = await cookies();
   const secure = process.env.NODE_ENV === "production";
-  store.set(ACCESS_COOKIE, data.session.access_token, { httpOnly: true, secure, sameSite: "lax", path: "/", maxAge: data.session.expires_in });
-  store.set(REFRESH_COOKIE, data.session.refresh_token, { httpOnly: true, secure, sameSite: "lax", path: "/admin", maxAge: 60 * 60 * 24 * 30 });
+  store.set(ACCESS_COOKIE, Buffer.from(email).toString("base64"), { httpOnly: true, secure, sameSite: "lax", path: "/", maxAge: 60 * 60 * 8 });
+  store.set(REFRESH_COOKIE, "cloudflare-admin", { httpOnly: true, secure, sameSite: "lax", path: "/admin", maxAge: 60 * 60 * 24 * 30 });
   redirect("/admin");
 }
 

@@ -25,65 +25,25 @@ export function absoluteUrl(path = "/") {
 }
 
 export const categories = [
-  {
-    name: "Finance & Markets",
-    slug: "finance-markets",
-    deck: "Personal finance, investing, insurance, loans, side hustles, and market-moving business stories.",
-    topics: ["Credit cards", "High-yield savings", "Mortgage rates", "Crypto", "Trading apps", "Startup funding"]
-  },
-  {
-    name: "Tech & AI",
-    slug: "tech-ai",
-    deck: "AI tools, enterprise software, gadgets, cybersecurity, cloud platforms, and the future of work.",
-    topics: ["AI tools", "Automation", "SaaS", "Cybersecurity", "Cloud hosting", "Smartphones"]
-  },
-  {
-    name: "Science & Future",
-    slug: "science-future",
-    deck: "Space, biotech, health technology, longevity science, green energy, EVs, and climate innovation.",
-    topics: ["Space", "Biotech", "Longevity", "EVs", "Solar", "Climate tech"]
-  },
-  {
-    name: "Pulse",
-    slug: "pulse",
-    deck: "Viral trends, creator economy, social platforms, streaming, entertainment, and internet culture.",
-    topics: ["Viral trends", "Creator economy", "Streaming", "Social media", "Entertainment", "Internet culture"]
-  }
+  { name: "Finance & Markets", slug: "finance-markets", deck: "Personal finance, investing, insurance, loans, side hustles, and market-moving business stories.", topics: ["Credit cards", "High-yield savings", "Mortgage rates", "Crypto", "Trading apps", "Startup funding"] },
+  { name: "Tech & AI", slug: "tech-ai", deck: "AI tools, enterprise software, gadgets, cybersecurity, cloud platforms, and the future of work.", topics: ["AI tools", "Automation", "SaaS", "Cybersecurity", "Cloud hosting", "Smartphones"] },
+  { name: "Science & Future", slug: "science-future", deck: "Space, biotech, health technology, longevity science, green energy, EVs, and climate innovation.", topics: ["Space", "Biotech", "Longevity", "EVs", "Solar", "Climate tech"] },
+  { name: "Pulse", slug: "pulse", deck: "Viral trends, creator economy, social platforms, streaming, entertainment, and internet culture.", topics: ["Viral trends", "Creator economy", "Streaming", "Social media", "Entertainment", "Internet culture"] }
 ] as const;
 
 export const sampleArticles = [
-  {
-    title: "Current Mortgage Rate Trends Homebuyers Should Watch",
-    category: "Finance & Markets",
-    slug: "current-mortgage-rate-trends-homebuyers-should-watch",
-    excerpt: "A practical briefing format for refinancing, affordability, and lender comparison updates.",
-    metric: "High CPC"
-  },
-  {
-    title: "Best AI Tools for Small Business Automation",
-    category: "Tech & AI",
-    slug: "best-ai-tools-small-business-automation",
-    excerpt: "A search-focused comparison template for founders, operators, and productivity teams.",
-    metric: "B2B demand"
-  },
-  {
-    title: "What Green Energy Breakthroughs Mean for EV Owners",
-    category: "Science & Future",
-    slug: "green-energy-breakthroughs-ev-owners",
-    excerpt: "A future-facing explainer model connecting climate innovation with consumer decisions.",
-    metric: "Evergreen"
-  }
+  { title: "Current Mortgage Rate Trends Homebuyers Should Watch", category: "Finance & Markets", slug: "current-mortgage-rate-trends-homebuyers-should-watch", excerpt: "A practical briefing format for refinancing, affordability, and lender comparison updates.", metric: "High CPC" },
+  { title: "Best AI Tools for Small Business Automation", category: "Tech & AI", slug: "best-ai-tools-small-business-automation", excerpt: "A search-focused comparison template for founders, operators, and productivity teams.", metric: "B2B demand" },
+  { title: "What Green Energy Breakthroughs Mean for EV Owners", category: "Science & Future", slug: "green-energy-breakthroughs-ev-owners", excerpt: "A future-facing explainer model connecting climate innovation with consumer decisions.", metric: "Evergreen" }
 ];
 
-export const monetizationConfig = {
-  adsEnabled: process.env.NEXT_PUBLIC_ADS_ENABLED === "true",
-  consentRequired: process.env.NEXT_PUBLIC_ADS_CONSENT_REQUIRED === "true",
-  adClient: process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID?.trim() || null,
-  adSlots: {
-    articleIntro: process.env.NEXT_PUBLIC_AD_SLOT_ARTICLE_INTRO?.trim() || null,
-    articleMid: process.env.NEXT_PUBLIC_AD_SLOT_ARTICLE_MID?.trim() || null,
-    articleRelated: process.env.NEXT_PUBLIC_AD_SLOT_ARTICLE_RELATED?.trim() || null,
-    sidebar: process.env.NEXT_PUBLIC_AD_SLOT_SIDEBAR?.trim() || null,
-    homepageSections: process.env.NEXT_PUBLIC_AD_SLOT_HOME_SECTION?.trim() || null
+export const monetizationConfig = { adsEnabled: process.env.NEXT_PUBLIC_ADS_ENABLED === "true", consentRequired: process.env.NEXT_PUBLIC_ADS_CONSENT_REQUIRED === "true", adClient: process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID?.trim() || null, adSlots: { articleIntro: process.env.NEXT_PUBLIC_AD_SLOT_ARTICLE_INTRO?.trim() || null, articleMid: process.env.NEXT_PUBLIC_AD_SLOT_ARTICLE_MID?.trim() || null, articleRelated: process.env.NEXT_PUBLIC_AD_SLOT_ARTICLE_RELATED?.trim() || null, sidebar: process.env.NEXT_PUBLIC_AD_SLOT_SIDEBAR?.trim() || null, homepageSections: process.env.NEXT_PUBLIC_AD_SLOT_HOME_SECTION?.trim() || null } } as const;
+
+export const platformConfig = {
+  cloudflare: {
+    workerName: process.env.CLOUDFLARE_WORKER_NAME?.trim() || "themajorinsight-worker",
+    accountId: process.env.CLOUDFLARE_ACCOUNT_ID?.trim() || null,
+    d1DatabaseId: process.env.CLOUDFLARE_D1_DATABASE_ID?.trim() || null,
+    r2Bucket: process.env.R2_BUCKET_NAME?.trim() || null
   }
 } as const;
