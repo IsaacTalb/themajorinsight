@@ -1,6 +1,7 @@
 name = "themajorinsight-worker"
 main = "src/worker/index.ts"
 compatibility_date = "2026-09-07"
+workers_dev = true
 
 [vars]
 APP_NAME = "The Major Insight"
@@ -8,8 +9,8 @@ APP_NAME = "The Major Insight"
 [[d1_databases]]
 binding = "DB"
 database_name = "themajorinsight"
-database_id = ""
+database_id = "${D1_DATABASE_ID}"
 
 [[r2_buckets]]
 binding = "MEDIA"
-bucket_name = ""
+bucket_name = "themajorinsight-media"

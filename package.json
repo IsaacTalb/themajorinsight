@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "node -e \"const fs=require('fs'); const p='.test-dist'; if (fs.existsSync(p)) fs.rmSync(p,{recursive:true,force:true});\" && tsc --ignoreConfig src/lib/editorial.ts src/lib/editorial.test.ts src/lib/media-validation.ts src/lib/media-validation.test.ts --outDir .test-dist --module commonjs --target es2020 --esModuleInterop --skipLibCheck --types node && node --test .test-dist/*.test.js && node -e \"const fs=require('fs'); const p='.test-dist'; if (fs.existsSync(p)) fs.rmSync(p,{recursive:true,force:true});\""
+    "test": "node -e \"const fs=require('fs'); const p='.test-dist'; if (fs.existsSync(p)) fs.rmSync(p,{recursive:true,force:true});\" && tsc --ignoreConfig src/lib/editorial.ts src/lib/editorial.test.ts src/lib/media-validation.ts src/lib/media-validation.test.ts --outDir .test-dist --module commonjs --target es2020 --esModuleInterop --skipLibCheck --types node && node --test .test-dist/*.test.js && node -e \"const fs=require('fs'); const p='.test-dist'; if (fs.existsSync(p)) fs.rmSync(p,{recursive:true,force:true});\"",
+    "worker:dev": "wrangler dev --local --config wrangler.toml",
+    "worker:deploy": "wrangler deploy --config wrangler.toml",
+    "d1:execute": "wrangler d1 execute themajorinsight --config wrangler.toml --local --file"
   },
   "dependencies": {
     "@supabase/supabase-js": "latest",
@@ -25,6 +28,7 @@
     "eslint-config-next": "latest",
     "postcss": "latest",
     "tailwindcss": "latest",
-    "typescript": "latest"
+    "typescript": "latest",
+    "wrangler": "latest"
   }
 }

@@ -1,14 +1,14 @@
 # The Major Insight
 
-A Next.js newsroom for finance, markets, technology, AI, science, and culture, with Supabase-backed editorial tooling and Cloudflare R2 media storage.
+A Next.js newsroom for finance, markets, technology, AI, science, and culture, with Cloudflare Workers, D1, and R2 supporting the editorial stack.
 
 ## Architecture
 
 - **Public website**: articles, category pages, author pages, search, newsletter signup, RSS, and sitemap
 - **Admin CMS**: post editing, media uploads, authors, categories, tags, analytics, newsletter, and trends
-- **Supabase**: PostgreSQL, auth, row-level security, analytics, subscriber records, and editorial metadata
+- **Cloudflare D1**: primary structured data store for editorial/admin records
 - **Cloudflare R2**: article images and uploaded media
-- **Cloudflare Workers**: trend discovery, brief suggestions, and newsletter candidate selection
+- **Cloudflare Workers**: trend discovery, brief suggestions, newsletter candidate selection, and cron jobs
 - **Vercel**: Next.js application hosting
 
 ## Local development
@@ -24,6 +24,8 @@ npm run dev
 - `npm run lint` — linting
 - `npm run typecheck` — TypeScript check
 - `npm run test` — unit tests
+- `npm run worker:dev` — local Cloudflare Worker
+- `npm run worker:deploy` — deploy Worker with Wrangler
 
 ## Environment variables
 
@@ -32,9 +34,6 @@ See `.env.example` for the required values.
 Common variables include:
 
 - `NEXT_PUBLIC_SITE_URL`
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- `SUPABASE_SERVICE_ROLE_KEY`
 - `NEXT_PUBLIC_CONTACT_EMAIL`
 - `NEXT_PUBLIC_ADS_ENABLED`
 - `NEXT_PUBLIC_ADSENSE_CLIENT_ID`
@@ -43,24 +42,19 @@ Common variables include:
 - `NEXT_PUBLIC_AD_SLOT_ARTICLE_RELATED`
 - `NEXT_PUBLIC_AD_SLOT_SIDEBAR`
 - `NEXT_PUBLIC_AD_SLOT_HOME_SECTION`
+- `CLOUDFLARE_ACCOUNT_ID`
+- `CLOUDFLARE_D1_DATABASE_ID`
+- `CLOUDFLARE_WORKER_NAME`
+- `R2_BUCKET_NAME`
 
-## Supabase setup
+## Cloudflare setup
 
-- Create the required tables for posts, authors, categories, tags, newsletter subscribers, trends, media assets, and audit logs.
-- Enable RLS on public tables.
-- Use the service role key only in trusted server routes and actions.
+- Create a D1 database named `themajorinsight`.
+- Create an R2 bucket named `themajorinsight-media`.
+- Deploy the Worker using `wrangler.toml`.
+- Keep Worker secrets and admin tokens server-side.
 
-## Migrations
-
-Apply schema changes before deployment and keep them in version control.
-
-## R2 setup
-
-- Create an R2 bucket for article media.
-- Configure the access credentials used by the upload and delete routes.
-- Store public media URLs alongside metadata.
-
-## Cloudflare Worker deployment
+## Worker deployment
 
 The worker layer is separate from the CMS and only assists editors.
 
@@ -78,14 +72,6 @@ The worker layer is separate from the CMS and only assists editors.
 - Automation must not publish final editorial content.
 - Store source URLs with research output.
 - Secure endpoints with secrets and authentication.
-
-## Cloudflare configuration
-
-Use Cloudflare for R2 and Worker deployment only. Keep ad and newsletter secrets server-side.
-
-## Vercel deployment
-
-Deploy the Next.js app to Vercel with the production environment variables configured there.
 
 ## Editor/admin workflow
 
