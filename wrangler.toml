@@ -9,7 +9,7 @@ APP_NAME = "The Major Insight"
 [[d1_databases]]
 binding = "DB"
 database_name = "themajorinsight"
-database_id = "${D1_DATABASE_ID}"
+database_id = "e49a5931-a942-49c6-a51c-bd632112b1eb"
 
 [[r2_buckets]]
 binding = "MEDIA"
