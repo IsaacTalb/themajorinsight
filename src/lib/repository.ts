@@ -1,42 +1,52 @@
 import "server-only";
 
-import { createAdminSupabaseClient } from "@/lib/supabase";
-
 type Row = Record<string, unknown>;
 
-function d1() {
-  const database = process.env.CLOUDFLARE_D1_DATABASE_ID?.trim();
-  if (!database) return null;
-  return { database };
+const tables = {
+  posts: [] as Row[],
+  media_assets: [] as Row[],
+  site_settings: [] as Row[],
+  newsletter_subscribers: [] as Row[],
+  trend_topics: [] as Row[],
+  audit_logs: [] as Row[]
+};
+
+function rows(table: keyof typeof tables) {
+  return tables[table];
 }
 
-async function queryAll(table: string) {
-  const client = createAdminSupabaseClient();
-  const { data } = await client.from(table as never).select("*").limit(500);
-  return (data ?? []) as Row[];
+function all(table: keyof typeof tables) {
+  return Promise.resolve(rows(table));
 }
 
-async function findById(table: string, id: string) {
-  const rows = await queryAll(table);
-  return rows.find((row) => String(row.id) === id) ?? null;
+function find(table: keyof typeof tables, id: string) {
+  return Promise.resolve(rows(table).find((row) => String(row.id) === id) ?? null);
 }
 
-async function upsertRow(table: string, value: Row) {
-  const client = createAdminSupabaseClient();
-  await client.from(table as never).upsert(value as never, { onConflict: "id", ignoreDuplicates: false });
-  return value;
+function insert(table: keyof typeof tables, value: Row) {
+  rows(table).push(value);
+  return Promise.resolve(value);
 }
 
-async function removeRow(table: string, id: string) {
-  const client = createAdminSupabaseClient();
-  await client.from(table as never).delete().eq("id", id);
+function update(table: keyof typeof tables, id: string, value: Row) {
+  const list = rows(table);
+  const index = list.findIndex((row) => String(row.id) === id);
+  if (index >= 0) list[index] = { ...list[index], ...value, id };
+  return Promise.resolve(list[index] ?? value);
+}
+
+function remove(table: keyof typeof tables, id: string) {
+  const list = rows(table);
+  const index = list.findIndex((row) => String(row.id) === id);
+  if (index >= 0) list.splice(index, 1);
+  return Promise.resolve();
 }
 
 export const repository = {
-  posts: { all: () => queryAll("posts"), insert: (value: Row) => upsertRow("posts", value), update: (_idKey: string, id: string, value: Row) => upsertRow("posts", { ...value, id }), remove: (idKey: string, id: string) => removeRow("posts", id), find: (idKey: string, id: string) => findById("posts", id) },
-  media: { all: () => queryAll("media_assets"), insert: (value: Row) => upsertRow("media_assets", value), update: (_idKey: string, id: string, value: Row) => upsertRow("media_assets", { ...value, id }), remove: (idKey: string, id: string) => removeRow("media_assets", id), find: (idKey: string, id: string) => findById("media_assets", id) },
-  settings: { all: () => queryAll("site_settings") },
-  newsletter: { all: () => queryAll("newsletter_subscribers") },
-  trends: { all: () => queryAll("trend_topics") },
-  audit: { all: () => queryAll("audit_logs"), insert: (value: Row) => upsertRow("audit_logs", value) }
+  posts: { all: () => all("posts"), insert: (value: Row) => insert("posts", value), update: (_idKey: string, id: string, value: Row) => update("posts", id, value), remove: (_idKey: string, id: string) => remove("posts", id), find: (_idKey: string, id: string) => find("posts", id) },
+  media: { all: () => all("media_assets"), insert: (value: Row) => insert("media_assets", value), update: (_idKey: string, id: string, value: Row) => update("media_assets", id, value), remove: (_idKey: string, id: string) => remove("media_assets", id), find: (_idKey: string, id: string) => find("media_assets", id) },
+  settings: { all: () => all("site_settings") },
+  newsletter: { all: () => all("newsletter_subscribers") },
+  trends: { all: () => all("trend_topics") },
+  audit: { all: () => all("audit_logs"), insert: (value: Row) => insert("audit_logs", value) }
 };
