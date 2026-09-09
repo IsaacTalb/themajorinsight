@@ -49,10 +49,12 @@ Common variables include:
 
 ## Cloudflare setup
 
-- Create a D1 database named `themajorinsight`.
-- Create an R2 bucket named `themajorinsight-media`.
-- Deploy the Worker using `wrangler.toml`.
-- Keep Worker secrets and admin tokens server-side.
+The Worker and Cloudflare resources are configured through `wrangler.toml`. See [docs/cloudflare-setup.md](docs/cloudflare-setup.md) for the exact manual Cloudflare and Vercel steps, required variables, and production verification checklist.
+
+- Worker: `themajorinsight-worker`
+- D1 binding: `DB`
+- R2 binding: `MEDIA`
+- Keep Worker secrets, R2 credentials, and admin tokens server-side.
 
 ## Worker deployment
 
