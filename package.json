@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "latest",
+    "jose": "^6.2.12",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest"

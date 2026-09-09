@@ -1,13 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-const ACCESS_COOKIE = "tmi-admin-access";
+import { NextResponse, type NextRequest } from "next/server";
 
-// Next.js 16 uses proxy.ts for an early authentication gate. The protected
-// server layout performs the authoritative user and role check on every route.
-export function proxy(request: NextRequest) {
-  const isLogin = request.nextUrl.pathname === "/admin/login";
-  if (!isLogin && !request.cookies.has(ACCESS_COOKIE)) {
-    return NextResponse.redirect(new URL("/admin/login", request.url));
-  }
+/**
+ * Cloudflare Zero Trust is the outer authentication boundary for /admin/*.
+ * The protected server layout performs authoritative JWT verification.
+ */
+export function proxy(_request: NextRequest) {
   return NextResponse.next();
 }
 

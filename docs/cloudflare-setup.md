@@ -10,14 +10,19 @@
 
 ## Manual Cloudflare steps
 
-1. Open **Workers & Pages → themajorinsight-worker → Settings → Variables and Secrets**.
-2. Add a secret named `WORKER_TOKEN` with a long random value. Do not place the value in Git or `wrangler.toml`.
-3. Open **R2 → themajorinsight-media → Settings** and configure a public custom domain (recommended) or an approved public development URL.
-4. Put that public origin in `R2_PUBLIC_BASE_URL` in Vercel.
-5. In **R2 → Manage R2 API Tokens**, create an object read/write token limited to `themajorinsight-media`.
-6. Add its access-key ID and secret access key to Vercel as `R2_ACCESS_KEY_ID` and `R2_SECRET_ACCESS_KEY`. Never use `NEXT_PUBLIC_` for either value.
-7. Open **Workers & Pages → themajorinsight-worker → Triggers** and verify the cron schedules after they are added to `wrangler.toml` and deployed.
-8. Open **D1 → duckcloud → Console** and verify the editorial tables exist. The Worker binding currently points to this database ID.
+1. In **Zero Trust → Access → Applications**, create a **Self-hosted** application for the production hostname and protect `/admin*`.
+2. Add an **Allow** policy containing only your administrator email. Keep the site hostname orange-cloud proxied through Cloudflare.
+3. Copy the Zero Trust team domain (for example, `your-team.cloudflareaccess.com`) into Vercel as `CLOUDFLARE_ACCESS_TEAM_DOMAIN`.
+4. Copy the exact application's **Application Audience (AUD) Tag** into Vercel as `CLOUDFLARE_ACCESS_AUD`.
+5. Add the same allowed email to Vercel as `MAJOR_INSIGHT_ADMIN_ALLOWED_EMAIL`, then redeploy Production. `NEXT_PUBLIC_CONTACT_EMAIL` does not grant admin access.
+6. Open **Workers & Pages → themajorinsight-worker → Settings → Variables and Secrets**.
+7. Add a secret named `WORKER_TOKEN` with a long random value. Do not place the value in Git or `wrangler.toml`.
+8. Open **R2 → themajorinsight-media → Settings** and configure a public custom domain (recommended) or an approved public development URL.
+9. Put that public origin in `R2_PUBLIC_BASE_URL` in Vercel.
+10. In **R2 → Manage R2 API Tokens**, create an object read/write token limited to `themajorinsight-media`.
+11. Add its access-key ID and secret access key to Vercel as `R2_ACCESS_KEY_ID` and `R2_SECRET_ACCESS_KEY`. Never use `NEXT_PUBLIC_` for either value.
+12. Open **Workers & Pages → themajorinsight-worker → Triggers** and verify the cron schedules after they are added to `wrangler.toml` and deployed.
+13. Open **D1 → duckcloud → Console** and verify the editorial tables exist. The Worker binding currently points to this database ID.
 
 ## Vercel variables
 
@@ -25,7 +30,9 @@ Copy the applicable names from `.env.example` into the Vercel project. Set produ
 
 - `NEXT_PUBLIC_SITE_URL`
 - `NEXT_PUBLIC_CONTACT_EMAIL`
-- `CLOUDFLARE_ADMIN_TOKEN`
+- `CLOUDFLARE_ACCESS_TEAM_DOMAIN`
+- `CLOUDFLARE_ACCESS_AUD`
+- `MAJOR_INSIGHT_ADMIN_ALLOWED_EMAIL`
 - `CLOUDFLARE_ACCOUNT_ID`
 - `CLOUDFLARE_D1_DATABASE_ID`
 - `CLOUDFLARE_WORKER_NAME`
